@@ -2,6 +2,7 @@
 
 import { Pause, Play } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -100,7 +101,12 @@ export function TrackList() {
                         className="rounded-md"
                       />
                       <div>
-                        <div className="font-medium">{track.title}</div>
+                        <Link
+                          href={`/track/${track.id}`}
+                          className="font-medium hover:underline cursor-pointer"
+                        >
+                          {track.title}
+                        </Link>
                         <div className="text-sm text-muted-foreground">
                           {track.album}
                         </div>

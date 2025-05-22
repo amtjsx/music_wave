@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Album,
   Home,
   Library,
   ListMusic,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type * as React from "react";
 
 import {
@@ -78,6 +80,13 @@ const recentlyPlayed = [
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation("sidebar");
+  const pathname = usePathname();
+
+  const isActive = (path: string) => {
+    if (path === "/" && pathname === "/") return true;
+    if (path !== "/" && pathname.startsWith(path)) return true;
+    return false;
+  };
 
   return (
     <Sidebar {...props} collapsible="icon">
@@ -102,7 +111,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild isActive={isActive("/")}>
                 <Link href="/">
                   <Home className="h-4 w-4" />
                   <span>{t("nav.home", "Home")}</span>
@@ -110,7 +119,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild isActive={isActive("/albums")}>
+                <Link href="/albums">
+                  <Album className="h-4 w-4" />
+                  <span>{t("nav.albums", "Albums")}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={isActive("/explore")}>
                 <Link href="/explore">
                   <Search className="h-4 w-4" />
                   <span>{t("nav.explore", "Explore")}</span>
@@ -118,7 +135,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild isActive={isActive("/shorts")}>
+                <Link href="/shorts">
+                  <Home className="h-4 w-4" />
+                  <span>{t("nav.shorts", "Shorts")}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={isActive("/library")}>
                 <Link href="/library">
                   <Library className="h-4 w-4" />
                   <span>{t("nav.library", "Library")}</span>
@@ -139,7 +164,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {playlists.map((playlist) => (
                 <SidebarMenuItem key={playlist.id}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive(`/playlist/${playlist.id}`)}
+                  >
                     <Link href={`/playlist/${playlist.id}`}>
                       <ListMusic className="h-4 w-4" />
                       <span>{playlist.name}</span>

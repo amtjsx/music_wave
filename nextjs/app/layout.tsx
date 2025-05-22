@@ -1,3 +1,9 @@
+import { AppSidebar } from "@/components/app-sidebar";
+import { MusicPlayer } from "@/components/music-player";
+import { AppHeader } from "@/components/site-header";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AudioProvider } from "@/contexts/audio-context";
 import { I18nProvider } from "@/contexts/translation.context";
 import { getAllDictionaries, getLocaleFromCookies } from "@/lib/i18n-utils";
 import { cookies } from "next/headers";
@@ -18,7 +24,23 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
           initialLocale={locale}
           initialTranslations={initialTranslations}
         >
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <AudioProvider>
+              <SidebarProvider>
+                <AppSidebar />
+                <SidebarInset>
+                  <AppHeader />
+                  {children}
+                  <MusicPlayer />
+                </SidebarInset>
+              </SidebarProvider>
+            </AudioProvider>
+          </ThemeProvider>
         </I18nProvider>
       </body>
     </html>
