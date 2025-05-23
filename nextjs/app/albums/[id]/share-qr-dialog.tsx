@@ -1,19 +1,19 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { QrCode, Download, Copy, Check } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { Check, Copy, Download, QrCode } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface ShareQRDialogProps {

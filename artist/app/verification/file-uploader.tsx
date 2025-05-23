@@ -1,10 +1,10 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
-import { useState, useRef } from "react";
-import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Upload } from "lucide-react";
+import { useRef, useState } from "react";
 
 interface FileUploaderProps {
   onFilesAdded: (files: { name: string; size: string; type: string }[]) => void;

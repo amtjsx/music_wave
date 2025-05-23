@@ -1,35 +1,35 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
-import { useState } from "react";
-import Image from "next/image";
-import {
-  Twitter,
-  Facebook,
-  Instagram,
-  Linkedin,
-  Mail,
-  Link,
-  QrCode,
-  Copy,
-  Check,
-  MessageSquare,
-  Share2,
-} from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import {
+    Check,
+    Copy,
+    Facebook,
+    Instagram,
+    Link,
+    Linkedin,
+    Mail,
+    MessageSquare,
+    QrCode,
+    Share2,
+    Twitter,
+} from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface ShareDialogProps {

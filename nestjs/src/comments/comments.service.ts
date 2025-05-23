@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Sequelize } from "sequelize-typescript";
 import { withTransaction } from "src/common/utils/transaction.util";
 import { Track } from "../music/models/track.model";
 import { User } from "../users/models/user.model";
@@ -21,9 +20,7 @@ export class CommentsService {
     @InjectModel(Track)
     private readonly trackModel: typeof Track,
     @InjectModel(User)
-    private readonly userModel: typeof User,
-    @InjectModel(Sequelize)
-    private readonly sequelize: Sequelize
+    private readonly userModel: typeof User
   ) {}
 
   async findAll(queryDto: QueryCommentsDto) {
@@ -103,56 +100,47 @@ export class CommentsService {
     userId: string,
     createCommentDto: CreateCommentDto
   ): Promise<Comment> {
-    return withTransaction(this.sequelize, async (transaction) => {
-      // Verify track exists
-      const track = await this.trackModel.findByPk(createCommentDto.trackId, {
-        transaction,
-      });
-      if (!track) {
-        throw new NotFoundException(
-          `Track with ID ${createCommentDto.trackId} not found`
-        );
-      }
-
-      // Verify parent comment exists if provided
-      if (createCommentDto.parentId) {
-        const parentComment = await this.commentModel.findByPk(
-          createCommentDto.parentId,
-          { transaction }
-        );
-        if (!parentComment) {
-          throw new NotFoundException(
-            `Parent comment with ID ${createCommentDto.parentId} not found`
-          );
-        }
-
-        // Ensure parent comment belongs to the same track
-        if (parentComment.trackId !== createCommentDto.trackId) {
-          throw new ForbiddenException(
-            "Parent comment must belong to the same track"
-          );
-        }
-      }
-
-      // Create comment
-      const comment = await this.commentModel.create(
-        {
-          ...createCommentDto,
-          userId,
-        },
-        { transaction }
+    // Verify track exists
+    const track = await this.trackModel.findByPk(createCommentDto.trackId);
+    if (!track) {
+      throw new NotFoundException(
+        `Track with ID ${createCommentDto.trackId} not found`
       );
+    }
 
-      // Return comment with user info
-      return this.commentModel.findByPk(comment.id, {
-        include: [
-          {
-            model: this.userModel,
-            attributes: ["id", "username", "avatarUrl"],
-          },
-        ],
-        transaction,
-      });
+    // Verify parent comment exists if provided
+    if (createCommentDto.parentId) {
+      const parentComment = await this.commentModel.findByPk(
+        createCommentDto.parentId
+      );
+      if (!parentComment) {
+        throw new NotFoundException(
+          `Parent comment with ID ${createCommentDto.parentId} not found`
+        );
+      }
+
+      // Ensure parent comment belongs to the same track
+      if (parentComment.trackId !== createCommentDto.trackId) {
+        throw new ForbiddenException(
+          "Parent comment must belong to the same track"
+        );
+      }
+    }
+
+    // Create comment
+    const comment = await this.commentModel.create({
+      ...createCommentDto,
+      userId,
+    });
+
+    // Return comment with user info
+    return this.commentModel.findByPk(comment.id, {
+      include: [
+        {
+          model: this.userModel,
+          attributes: ["id", "username", "avatarUrl"],
+        },
+      ],
     });
   }
 
@@ -161,72 +149,63 @@ export class CommentsService {
     userId: string,
     updateCommentDto: UpdateCommentDto
   ): Promise<Comment> {
-    return withTransaction(this.sequelize, async (transaction) => {
-      const comment = await this.commentModel.findByPk(id, { transaction });
+    const comment = await this.commentModel.findByPk(id);
 
-      if (!comment) {
-        throw new NotFoundException(`Comment with ID ${id} not found`);
-      }
+    if (!comment) {
+      throw new NotFoundException(`Comment with ID ${id} not found`);
+    }
 
-      // Verify ownership
-      if (comment.userId !== userId) {
-        throw new ForbiddenException(
-          "You do not have permission to update this comment"
-        );
-      }
-
-      // Update comment
-      await comment.update(
-        {
-          ...updateCommentDto,
-          isEdited: true,
-        },
-        { transaction }
+    // Verify ownership
+    if (comment.userId !== userId) {
+      throw new ForbiddenException(
+        "You do not have permission to update this comment"
       );
+    }
 
-      // Return updated comment with user info
-      return this.commentModel.findByPk(id, {
-        include: [
-          {
-            model: this.userModel,
-            attributes: ["id", "username", "avatarUrl"],
-          },
-        ],
-        transaction,
-      });
+    // Update comment
+    await comment.update({
+      ...updateCommentDto,
+      isEdited: true,
+    });
+
+    // Return updated comment with user info
+    return this.commentModel.findByPk(id, {
+      include: [
+        {
+          model: this.userModel,
+          attributes: ["id", "username", "avatarUrl"],
+        },
+      ],
     });
   }
 
   async remove(id: string, userId: string, isAdmin = false): Promise<void> {
-    return withTransaction(this.sequelize, async (transaction) => {
-      const comment = await this.commentModel.findByPk(id, { transaction });
+    const comment = await this.commentModel.findByPk(id,);
 
-      if (!comment) {
-        throw new NotFoundException(`Comment with ID ${id} not found`);
-      }
+    if (!comment) {
+      throw new NotFoundException(`Comment with ID ${id} not found`);
+    }
 
-      // Verify ownership or admin status
-      if (!isAdmin && comment.userId !== userId) {
-        throw new ForbiddenException(
-          "You do not have permission to delete this comment"
-        );
-      }
+    // Verify ownership or admin status
+    if (!isAdmin && comment.userId !== userId) {
+      throw new ForbiddenException(
+        "You do not have permission to delete this comment"
+      );
+    }
 
-      // Delete comment
-      await comment.destroy({ transaction });
-    });
+    // Delete comment
+    await comment.destroy();
   }
 
   async likeComment(id: string): Promise<Comment> {
-    return withTransaction(this.sequelize, async (transaction) => {
-      const comment = await this.commentModel.findByPk(id, { transaction });
+      const comment = await this.commentModel.findByPk(id);
 
       if (!comment) {
         throw new NotFoundException(`Comment with ID ${id} not found`);
       }
 
       // Increment likes
-      await comment.increment("likes", { transaction });
+      await comment.increment("likes");
 
       // Return updated comment
       return this.commentModel.findByPk(id, {
@@ -236,9 +215,7 @@ export class CommentsService {
             attributes: ["id", "username", "avatarUrl"],
           },
         ],
-        transaction,
       });
-    });
   }
 
   async getCommentReplies(

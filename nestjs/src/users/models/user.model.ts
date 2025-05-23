@@ -19,26 +19,28 @@ import { Comment } from "../../comments/models/comment.model";
 import { Rating } from "../../ratings/models/rating.model";
 import { Role } from "../enums/role.enum";
 
-@Table
+@Table({ tableName: "users", timestamps: true, paranoid: true })
 export class User extends Model {
-  @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Column({
+    type: DataType.UUID,
+    primaryKey: true,
+    defaultValue: DataType.UUIDV4,
+  })
   id: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column
+  @Column({ type: DataType.STRING, allowNull: false })
   password: string;
 
-  @Column
+  @Column({ type: DataType.STRING, allowNull: false })
   username: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   fullName: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   avatarUrl: string;
 
   @Column(DataType.ARRAY(DataType.STRING))

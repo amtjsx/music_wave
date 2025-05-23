@@ -1,18 +1,18 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
 import {
-  Heart,
-  Loader2,
-  MessageCircle,
-  Music,
-  Pause,
-  Play,
-  RefreshCw,
-  Share2,
-  Volume2,
-  VolumeX,
+    Heart,
+    Loader2,
+    MessageCircle,
+    Music,
+    Pause,
+    Play,
+    RefreshCw,
+    Share2,
+    Volume2,
+    VolumeX,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";

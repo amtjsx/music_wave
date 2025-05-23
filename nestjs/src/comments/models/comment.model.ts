@@ -13,7 +13,7 @@ import {
 import { Track } from "../../music/models/track.model"
 import { User } from "../../users/models/user.model"
 
-@Table
+@Table({ tableName: "comments", timestamps: true, paranoid: true })
 export class Comment extends Model {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -23,12 +23,10 @@ export class Comment extends Model {
   @Column(DataType.TEXT)
   content: string
 
-  @Default(false)
-  @Column
+  @Column({ type: DataType.BOOLEAN, allowNull: true, defaultValue: false })
   isEdited: boolean
 
-  @Default(0)
-  @Column
+  @Column({ type: DataType.INTEGER, allowNull: true, defaultValue: 0 })
   likes: number
 
   @ForeignKey(() => Track)

@@ -1,60 +1,48 @@
 import {
-  Table,
-  Column,
-  Model,
-  PrimaryKey,
-  DataType,
-  CreatedAt,
-  UpdatedAt,
-  Default,
-  ForeignKey,
   BelongsTo,
-  Unique,
-} from "sequelize-typescript"
-import { Track } from "../../music/models/track.model"
-import { User } from "../../users/models/user.model"
+  Column,
+  CreatedAt,
+  DataType,
+  ForeignKey,
+  Model,
+  Table,
+  UpdatedAt
+} from "sequelize-typescript";
+import { Track } from "../../music/models/track.model";
+import { User } from "../../users/models/user.model";
 
-@Table
+@Table({ tableName: "ratings", timestamps: true, paranoid: true })
 export class Rating extends Model {
-  @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
-  id: string
-
   @Column({
-    type: DataType.FLOAT,
-    allowNull: false,
-    validate: {
-      min: 1,
-      max: 5,
-    },
+    type: DataType.UUID,
+    primaryKey: true,
+    defaultValue: DataType.UUIDV4,
   })
-  value: number
+  id: string;
+
+  @Column({ type: DataType.FLOAT, allowNull: false })
+  value: number;
 
   @Column({ type: DataType.TEXT, allowNull: true })
-  review: string
+  review: string;
 
   @ForeignKey(() => Track)
   @Column(DataType.UUID)
-  trackId: string
+  trackId: string;
 
   @BelongsTo(() => Track)
-  track: Track
+  track: Track;
 
   @ForeignKey(() => User)
   @Column(DataType.UUID)
-  userId: string
+  userId: string;
 
   @BelongsTo(() => User)
-  user: User
+  user: User;
 
   @CreatedAt
-  createdAt: Date
+  createdAt: Date;
 
   @UpdatedAt
-  updatedAt: Date
-
-  // Ensure a user can only rate a track once
-  @Unique("user_track_unique")
-  userTrackIndex: string
+  updatedAt: Date;
 }

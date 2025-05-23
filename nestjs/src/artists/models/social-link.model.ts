@@ -1,17 +1,15 @@
 import {
-  Table,
+  BelongsTo,
   Column,
-  Model,
-  PrimaryKey,
   DataType,
-  CreatedAt,
-  UpdatedAt,
   Default,
   ForeignKey,
-  BelongsTo,
-} from "sequelize-typescript"
-import { Artist } from "./artist.model"
-import { User } from "../../users/models/user.model"
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript";
+import { User } from "../../users/models/user.model";
+import { Artist } from "./artist.model";
 
 export enum SocialPlatform {
   INSTAGRAM = "instagram",
@@ -35,36 +33,44 @@ export class SocialLink extends Model {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id: string
+  id: string;
 
   @Column({
     type: DataType.ENUM(...Object.values(SocialPlatform)),
   })
-  platform: SocialPlatform
+  platform: SocialPlatform;
 
-  @Column
-  url: string
+  @Column({ type: DataType.STRING, allowNull: false })
+  url: string;
 
-  @Column({ allowNull: true })
-  username: string
+  @Column({ type: DataType.STRING, allowNull: true })
+  username: string;
 
   @ForeignKey(() => Artist)
   @Column({ type: DataType.UUID, allowNull: true })
-  artistId: string
+  artistId: string;
 
   @BelongsTo(() => Artist)
-  artist: Artist
+  artist: Artist;
 
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID, allowNull: true })
-  userId: string
+  userId: string;
 
   @BelongsTo(() => User)
-  user: User
+  user: User;
 
-  @CreatedAt
-  createdAt: Date
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW,
+  })
+  createdAt: Date;
 
-  @UpdatedAt
-  updatedAt: Date
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW,
+  })
+  updatedAt: Date;
 }

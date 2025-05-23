@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  Pause,
-  Play,
-  SkipBack,
-  SkipForward,
-  Volume2,
-  VolumeX,
+    Pause,
+    Play,
+    SkipBack,
+    SkipForward,
+    Volume2,
+    VolumeX,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -14,8 +14,8 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useAudio } from "@/contexts/audio-context";
+import { Track } from "@/hooks/use-audio-player";
 import { useTranslation } from "@/hooks/use-translation";
-import type { Track } from "@/hooks/use-audio-player";
 import { getAlbumArtPlaceholder } from "@/utils/image-utils";
 
 // Sample tracks data with audio files

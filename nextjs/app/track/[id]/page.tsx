@@ -1,27 +1,27 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
 import {
-  AlertTriangle,
-  Calendar,
-  Download,
-  Flag,
-  Heart,
-  ListMusic,
-  MessageSquare,
-  MoreHorizontal,
-  Music,
-  Pause,
-  Play,
-  Repeat,
-  Share2,
-  Shuffle,
-  SkipBack,
-  SkipForward,
-  Volume2,
-  VolumeX,
-  X,
+    AlertTriangle,
+    Calendar,
+    Download,
+    Flag,
+    Heart,
+    ListMusic,
+    MessageSquare,
+    MoreHorizontal,
+    Music,
+    Pause,
+    Play,
+    Repeat,
+    Share2,
+    Shuffle,
+    SkipBack,
+    SkipForward,
+    Volume2,
+    VolumeX,
+    X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,20 +31,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";

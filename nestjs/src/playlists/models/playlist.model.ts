@@ -28,27 +28,29 @@ export class Playlist extends Model {
   })
   id: string;
 
-  @Column
+  @Column({ type: DataType.STRING, allowNull: false })
   name: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   description: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   coverImage: string;
 
-  @Default(false)
-  @Column
+  @Column({ type: DataType.BOOLEAN, allowNull: true, defaultValue: false })
   isPublic: boolean;
 
+  @Column({ type: DataType.BOOLEAN, allowNull: true, defaultValue: false })
+  isFeatured: boolean;
+
   @ForeignKey(() => Artist)
-  @Column(DataType.UUID)
+  @Column({ type: DataType.UUID, allowNull: true })
   artistId: string;
   @BelongsTo(() => Artist)
   artist: Artist;
 
   @ForeignKey(() => User)
-  @Column(DataType.UUID)
+  @Column({ type: DataType.UUID, allowNull: true })
   ownerId: string;
   @BelongsTo(() => User)
   owner: User;

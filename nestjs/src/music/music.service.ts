@@ -1,19 +1,19 @@
 import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
+    BadRequestException,
+    Injectable,
+    NotFoundException,
 } from "@nestjs/common";
-import type { Sequelize } from "sequelize-typescript";
-import { Op } from "sequelize";
+import { Express } from "express";
 import * as fs from "fs";
-import * as path from "path";
 import * as mm from "music-metadata";
-import type { Track } from "./models/track.model";
-import type { CreateTrackDto } from "./dto/create-track.dto";
-import type { UpdateTrackDto } from "./dto/update-track.dto";
-import type { QueryTracksDto } from "./dto/query-tracks.dto";
+import * as path from "path";
+import { Op } from "sequelize";
+import { Sequelize } from "sequelize-typescript";
 import { withTransaction } from "../common/utils/transaction.util";
-import type { Express } from "express";
+import { CreateTrackDto } from "./dto/create-track.dto";
+import { QueryTracksDto } from "./dto/query-tracks.dto";
+import { UpdateTrackDto } from "./dto/update-track.dto";
+import { Track } from "./models/track.model";
 
 @Injectable()
 export class MusicService {

@@ -1,34 +1,34 @@
 "use client";
 
 import {
-  Home,
-  Library,
-  ListMusic,
-  Music2,
-  PlusCircle,
-  Radio,
-  Search,
-  UserCircle,
+    Home,
+    Library,
+    ListMusic,
+    Music2,
+    PlusCircle,
+    Radio,
+    Search,
+    UserCircle,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import type * as React from "react";
+import * as React from "react";
 
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  SidebarSeparator,
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
+    SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { useTranslation } from "@/hooks/use-translation";
 import { getAlbumArtPlaceholder } from "@/utils/image-utils";

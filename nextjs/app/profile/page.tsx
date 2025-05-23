@@ -6,23 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  BarChart3,
-  Camera,
-  Clock,
-  Edit,
-  Headphones,
-  Heart,
-  History,
-  ListMusic,
-  Mail,
-  Settings,
-  Star,
-  Users,
+    BarChart3,
+    Camera,
+    Clock,
+    Edit,
+    Headphones,
+    Heart,
+    History,
+    ListMusic,
+    Mail,
+    Settings,
+    Star,
+    Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import type React from "react";
-import { Suspense, useState } from "react";
+import React, { Suspense, useState } from "react";
 import { ChangePhotoDialog } from "./change-photo-dialog";
 import { CoverPhotoEditor } from "./cover-photo-editor";
 

@@ -1,25 +1,24 @@
+import { TrustScoreCard } from "@/components/trust-score-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { VerifiedBadge } from "@/components/verified-badge";
 import {
-  Clock,
-  Edit,
-  Heart,
-  ListMusic,
-  Mail,
-  MessageSquare,
-  Music,
-  Settings,
-  Share2,
-  Users,
+    Clock,
+    Edit,
+    Heart,
+    ListMusic,
+    Mail,
+    MessageSquare,
+    Music,
+    Settings,
+    Share2,
+    Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import type React from "react";
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import { TrustScoreBadge } from "../track/[id]/trust-score-badge";
-import { TrustScoreCard } from "@/components/trust-score-card";
 
 // Mock data for demonstration
 const mockUserData = {

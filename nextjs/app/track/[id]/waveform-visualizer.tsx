@@ -1,9 +1,9 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
-import { useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
 
 interface WaveformVisualizerProps {
   isPlaying: boolean;

@@ -1,29 +1,29 @@
-import type React from "react";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import {
-  getTrustLevel,
-  getTrustLevelLabel,
-  getTrustLevelColor,
-  getTrustLevelIcon,
-  getTrustLevelDescription,
-  type TrustLevel,
-} from "./trust-score-badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  MessageSquare,
-  Flag,
-  Clock,
-  Music,
-  UserCheck,
-  AlertTriangle,
+    AlertTriangle,
+    Clock,
+    Flag,
+    MessageSquare,
+    Music,
+    UserCheck,
 } from "lucide-react";
+import React from "react";
+import {
+    getTrustLevel,
+    getTrustLevelColor,
+    getTrustLevelDescription,
+    getTrustLevelIcon,
+    getTrustLevelLabel,
+    type TrustLevel,
+} from "./trust-score-badge";
 
 interface TrustScoreCardProps {
   userId: string;

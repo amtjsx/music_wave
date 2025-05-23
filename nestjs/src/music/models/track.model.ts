@@ -1,64 +1,61 @@
 import {
-  Table,
-  Column,
-  Model,
-  PrimaryKey,
-  DataType,
-  CreatedAt,
-  UpdatedAt,
-  Default,
-  BelongsToMany,
-  ForeignKey,
   BelongsTo,
+  BelongsToMany,
+  Column,
+  CreatedAt,
+  DataType,
+  ForeignKey,
   HasMany,
+  Model,
+  Table,
+  UpdatedAt
 } from "sequelize-typescript";
-import { Playlist } from "../../playlists/models/playlist.model";
-import { PlaylistTrack } from "../../playlists/models/playlist-track.model";
 import { Artist } from "../../artists/models/artist.model";
 import { Comment } from "../../comments/models/comment.model";
+import { PlaylistTrack } from "../../playlists/models/playlist-track.model";
+import { Playlist } from "../../playlists/models/playlist.model";
 import { Rating } from "../../ratings/models/rating.model";
 
-@Table
+@Table({ tableName: "tracks", timestamps: true, paranoid: true })
 export class Track extends Model {
-  @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Column({
+    type: DataType.UUID,
+    primaryKey: true,
+    defaultValue: DataType.UUIDV4,
+  })
   id: string;
 
-  @Column
+  @Column({ type: DataType.STRING, allowNull: false })
   title: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   album: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   genre: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.INTEGER, allowNull: true })
   year: number;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.INTEGER, allowNull: true })
   duration: number;
 
-  @Column
+  @Column({ type: DataType.STRING, allowNull: true })
   filename: string;
 
-  @Column
+  @Column({ type: DataType.STRING, allowNull: true })
   audioSrc: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   coverArt: string;
 
-  @Default(0)
-  @Column
+  @Column({ type: DataType.INTEGER, allowNull: true })
   playCount: number;
 
-  @Default(0)
-  @Column(DataType.FLOAT)
+  @Column({ type: DataType.FLOAT, allowNull: true })
   averageRating: number;
 
-  @Default(0)
-  @Column
+  @Column({ type: DataType.INTEGER, allowNull: true })
   ratingCount: number;
 
   @BelongsToMany(() => Playlist, () => PlaylistTrack)

@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
 import { Loader2, MoreHorizontal, RefreshCw, Shield, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -8,10 +8,10 @@ import { useEffect, useRef, useState } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { ShortVideoPlayer } from "./short-video-player";

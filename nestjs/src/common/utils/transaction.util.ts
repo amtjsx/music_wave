@@ -1,5 +1,5 @@
-import type { Transaction } from "sequelize"
-import type { Sequelize } from "sequelize-typescript"
+import { Transaction } from "sequelize"
+import { Sequelize } from "sequelize-typescript"
 
 /**
  * Executes a callback within a transaction and handles commit/rollback

@@ -1,21 +1,29 @@
-import { Column, DataType, Default, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript"
-import { Artist } from "./artist.model"
+import {
+  Column,
+  DataType,
+  Default,
+  ForeignKey,
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript";
+import { Artist } from "./artist.model";
 
 @Table({ tableName: "artist_genres", timestamps: true, paranoid: true })
 export class ArtistGenre extends Model {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
-  id: string
+  id: string;
 
   @ForeignKey(() => Artist)
   @Column(DataType.UUID)
-  artistId: string
+  artistId: string;
 
-  @Column
-  genre: string
+  @Column({ type: DataType.STRING, allowNull: true })
+  genre: string;
 
   @Default(false)
-  @Column
-  isPrimary: boolean
+  @Column({ type: DataType.BOOLEAN, allowNull: true })
+  isPrimary: boolean;
 }

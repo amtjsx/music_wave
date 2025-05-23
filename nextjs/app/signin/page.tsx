@@ -1,17 +1,17 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
-import { useState } from "react";
-import Link from "next/link";
+import { Apple, Lock, Mail, Music, User } from "lucide-react";
 import Image from "next/image";
-import { Music, Mail, Lock, User, Apple } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Checkbox } from "@/components/ui/checkbox";
 
 export default function AuthPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);

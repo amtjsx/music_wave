@@ -1,11 +1,11 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
-import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronUp, ChevronDown, Check, X, Upload } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Upload, X } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 interface CoverPhotoEditorProps {
   coverUrl: string;

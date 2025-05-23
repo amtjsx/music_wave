@@ -1,12 +1,12 @@
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
 import { AlbumHeader } from "./album-header";
-import { TrackList } from "./track-list";
 import { AlbumReviews } from "./album-reviews";
 import { RelatedAlbums } from "./related-albums";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
+import { TrackList } from "./track-list";
 
 // This would normally come from a database or API
 const getAlbumById = (id: string) => {

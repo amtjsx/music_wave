@@ -3,11 +3,9 @@ import {
   Column,
   CreatedAt,
   DataType,
-  Default,
   ForeignKey,
   HasMany,
   Model,
-  PrimaryKey,
   Table,
   UpdatedAt
 } from "sequelize-typescript";
@@ -18,63 +16,60 @@ import { SocialLink } from "./social-link.model";
 
 @Table({ tableName: "artists", timestamps: true, paranoid: true })
 export class Artist extends Model {
-  @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Column({
+    type: DataType.UUID,
+    primaryKey: true,
+    defaultValue: DataType.UUIDV4,
+  })
   id: string;
 
-  @Column
+  @Column({ type: DataType.STRING, allowNull: false })
   artistName: string;
 
   @Column({ allowNull: true, type: DataType.TEXT })
   bio: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   profileImageUrl: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   coverImageUrl: string;
 
-  @Column
+  @Column({ type: DataType.STRING, allowNull: true })
   primaryGenre: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   website: string;
 
   // Payment information
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   paymentMethod: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   accountNumber: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   routingNumber: string;
 
-  @Column({ allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true })
   taxId: string;
 
   // Stats and metrics
-  @Default(0)
-  @Column
+  @Column({ type: DataType.INTEGER, allowNull: true })
   totalStreams: number;
 
-  @Default(0)
-  @Column
+  @Column({ type: DataType.INTEGER, allowNull: true })
   monthlyListeners: number;
 
-  @Default(0)
-  @Column
+  @Column({ type: DataType.INTEGER, allowNull: true })
   followers: number;
 
   // Verification status
-  @Default(false)
-  @Column
+  @Column({ type: DataType.BOOLEAN, allowNull: true })
   isVerified: boolean;
 
   // Featured status
-  @Default(false)
-  @Column
+  @Column({ type: DataType.BOOLEAN, allowNull: true })
   isFeatured: boolean;
 
   // Relations

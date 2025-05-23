@@ -1,18 +1,18 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 
-import { useState, useCallback, useRef } from "react";
-import Cropper from "react-easy-crop";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
+import { useCallback, useRef, useState } from "react";
+import Cropper from "react-easy-crop";
 
 interface ChangePhotoDialogProps {
   isOpen: boolean;

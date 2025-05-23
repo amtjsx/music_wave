@@ -6,15 +6,15 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
 import { useAudio } from "@/contexts/audio-context";
-import type { Track } from "@/hooks/use-audio-player";
+import { Track } from "@/hooks/use-audio-player";
 import { useTranslation } from "@/hooks/use-translation";
 import { getAlbumArtPlaceholder } from "@/utils/image-utils";
 
