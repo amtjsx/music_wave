@@ -148,7 +148,7 @@ class PlaylistSection extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    song.artist,
+                    song.artist.name,
                     style: TextStyle(fontSize: 12, color: Colors.grey[400]),
                   ),
                   trailing: Row(

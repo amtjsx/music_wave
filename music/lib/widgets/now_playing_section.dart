@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../models/song.dart';
-import '../utils/format_utils.dart';
+import '../services/song_service.dart';
 
-class NowPlayingSection extends StatelessWidget {
+class NowPlayingSection extends ConsumerWidget {
   final Song song;
   final bool isPlaying;
   final double currentValue;
@@ -25,7 +26,10 @@ class NowPlayingSection extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Get the player state to access repeat and shuffle modes
+    final playerState = ref.watch(songNotifierProvider);
+
     return Container(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -74,7 +78,7 @@ class NowPlayingSection extends StatelessWidget {
           // Artist profile section
           GestureDetector(
             onTap: () {
-              context.push('/artists/${song.artistDetails.id}');
+              context.push('/artists/${song.artist.id}');
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -84,14 +88,14 @@ class NowPlayingSection extends StatelessWidget {
                   // Artist avatar
                   CircleAvatar(
                     radius: 12,
-                    backgroundImage: NetworkImage(song.artistDetails.imageUrl),
+                    backgroundImage: NetworkImage(song.artist.imageUrl),
                     backgroundColor: Colors.grey[800],
                   ),
                   const SizedBox(width: 8),
 
                   // Artist name
                   Text(
-                    song.artist,
+                    song.artist.name,
                     style: TextStyle(fontSize: 16, color: Colors.grey[300]),
                   ),
 
@@ -115,12 +119,15 @@ class NowPlayingSection extends StatelessWidget {
               thumbColor: Theme.of(context).colorScheme.secondary,
               overlayColor: Theme.of(
                 context,
-              ).colorScheme.secondary.withOpacity(0.3),
+              ).colorScheme.secondary.withValues(alpha: 0.3),
             ),
             child: Slider(
-              value: currentValue,
+              value: currentValue.clamp(
+                0.0,
+                1.0,
+              ), // Ensure value is between 0 and 1
               min: 0.0,
-              max: 100.0,
+              max: 1.0, // Changed from 100.0 to 1.0 to match the expected range
               onChanged: onSliderChanged,
             ),
           ),
@@ -131,10 +138,12 @@ class NowPlayingSection extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // Current position
                 Text(
-                  FormatUtils.formatDuration(currentValue),
+                  _formatPosition(song.duration, currentValue),
                   style: TextStyle(color: Colors.grey[400], fontSize: 12),
                 ),
+                // Total duration
                 Text(
                   song.duration,
                   style: TextStyle(color: Colors.grey[400], fontSize: 12),
@@ -148,17 +157,29 @@ class NowPlayingSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // Shuffle button
               IconButton(
-                icon: const Icon(Icons.shuffle),
-                onPressed: () {},
+                icon: Icon(
+                  Icons.shuffle,
+                  color:
+                      playerState.isShuffleEnabled
+                          ? Theme.of(context).colorScheme.secondary
+                          : Colors.grey[400],
+                ),
+                onPressed: () {
+                  // Toggle shuffle mode
+                  ref.read(songNotifierProvider.notifier).toggleShuffleMode();
+                },
                 iconSize: 24,
-                color: Colors.grey[400],
               ),
+              // Previous button
               IconButton(
                 icon: const Icon(Icons.skip_previous),
                 onPressed: onPrevious,
                 iconSize: 40,
+                color: Colors.white,
               ),
+              // Play/Pause button
               Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
@@ -172,16 +193,27 @@ class NowPlayingSection extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                 ),
               ),
+              // Next button
               IconButton(
                 icon: const Icon(Icons.skip_next),
                 onPressed: onNext,
                 iconSize: 40,
+                color: Colors.white,
               ),
+              // Repeat button
               IconButton(
-                icon: const Icon(Icons.repeat),
-                onPressed: () {},
+                icon: Icon(
+                  _getRepeatIcon(playerState.repeatMode),
+                  color:
+                      playerState.repeatMode != RepeatMode.off
+                          ? Theme.of(context).colorScheme.secondary
+                          : Colors.grey[400],
+                ),
+                onPressed: () {
+                  // Cycle through repeat modes
+                  ref.read(songNotifierProvider.notifier).cycleRepeatMode();
+                },
                 iconSize: 24,
-                color: Colors.grey[400],
               ),
             ],
           ),
@@ -189,4 +221,38 @@ class NowPlayingSection extends StatelessWidget {
       ),
     );
   }
+
+  // Helper method to format the current position based on the song duration and slider value
+  String _formatPosition(String durationStr, double sliderValue) {
+    // Parse the duration string (e.g., "3:45")
+    final parts = durationStr.split(':');
+    if (parts.length == 2) {
+      final minutes = int.tryParse(parts[0]) ?? 0;
+      final seconds = int.tryParse(parts[1]) ?? 0;
+      final totalSeconds = (minutes * 60) + seconds;
+
+      // Calculate current position in seconds
+      final currentSeconds = (totalSeconds * sliderValue).round();
+      final currentMinutes = currentSeconds ~/ 60;
+      final remainingSeconds = currentSeconds % 60;
+
+      // Format as "m:ss"
+      return '$currentMinutes:${remainingSeconds.toString().padLeft(2, '0')}';
+    }
+
+    return "0:00";
+  }
+
+  // Helper method to get the appropriate repeat icon based on the repeat mode
+  IconData _getRepeatIcon(RepeatMode repeatMode) {
+    switch (repeatMode) {
+      case RepeatMode.off:
+        return Icons.repeat;
+      case RepeatMode.one:
+        return Icons.repeat;
+      case RepeatMode.all:
+        return Icons.repeat_one;
+    }
+  }
+
 }

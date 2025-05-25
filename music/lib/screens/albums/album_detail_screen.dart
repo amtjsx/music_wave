@@ -12,6 +12,7 @@ import 'package:music/screens/download/download_queue_screen.dart';
 import 'package:music/screens/download/download_queue_state.dart';
 import 'package:music/screens/playlists/add_to_playlist_sheet.dart';
 import 'package:music/services/share_service.dart';
+import 'package:music/services/song_service.dart';
 import 'package:music/widgets/audio_visualizer.dart';
 import 'package:music/widgets/share_sheet.dart';
 
@@ -42,15 +43,15 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
     'artist': 'The Echoes',
     'releaseDate': '2023',
     'genre': 'Alternative Rock',
-    'coverArt': 'https://via.placeholder.com/500?text=Album+Cover',
+    'coverArt': 'https://picsum.photos/400?random=${100}',
     'description':
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     'tracks': [
       Song(
-        artistDetails: Artist(
+        artist: Artist(
           name: 'The Echoes',
           id: 'artist_001',
-          imageUrl: 'https://via.placeholder.com/500?text=Artist+Cover',
+          imageUrl: 'https://picsum.photos/400?random=${100}',
           bio:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
           followers: 1000,
@@ -62,15 +63,19 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         ),
         id: 'song_001',
         title: 'Midnight Hour',
-        artist: 'The Echoes',
-        albumArt: 'https://via.placeholder.com/500?text=Album+Cover',
+        albumArt: 'https://picsum.photos/400?random=${100}',
         duration: '3:45',
+        artistId: 'artist_001',
+        albumId: 'album_001',
+        albumName: 'Midnight Memories',
+        audioUrl:
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
       ),
       Song(
-        artistDetails: Artist(
+        artist: Artist(
           name: 'The Echoes',
           id: 'artist_001',
-          imageUrl: 'https://via.placeholder.com/500?text=Artist+Cover',
+          imageUrl: 'https://picsum.photos/400?random=${100}',
           bio:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
           followers: 1000,
@@ -82,15 +87,19 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         ),
         id: 'song_002',
         title: 'Starlight Dreams',
-        artist: 'The Echoes',
-        albumArt: 'https://via.placeholder.com/500?text=Album+Cover',
+        artistId: 'artist_001',
+        albumId: 'album_001',
+        albumName: 'Midnight Memories',
+        audioUrl:
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+        albumArt: 'https://picsum.photos/400?random=${100}',
         duration: '4:12',
       ),
       Song(
-        artistDetails: Artist(
+        artist: Artist(
           name: 'The Echoes',
           id: 'artist_001',
-          imageUrl: 'https://via.placeholder.com/500?text=Artist+Cover',
+          imageUrl: 'https://picsum.photos/400?random=${100}',
           bio:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
           followers: 1000,
@@ -102,15 +111,19 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         ),
         id: 'song_003',
         title: 'Echoes of Yesterday',
-        artist: 'The Echoes',
-        albumArt: 'https://via.placeholder.com/500?text=Album+Cover',
+        artistId: 'artist_001',
+        albumId: 'album_001',
+        albumName: 'Midnight Memories',
+        audioUrl:
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
+        albumArt: 'https://picsum.photos/400?random=${100}',
         duration: '3:58',
       ),
       Song(
-        artistDetails: Artist(
+        artist: Artist(
           name: 'The Echoes',
           id: 'artist_001',
-          imageUrl: 'https://via.placeholder.com/500?text=Artist+Cover',
+          imageUrl: 'https://picsum.photos/400?random=${100}',
           bio:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
           followers: 1000,
@@ -122,15 +135,19 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         ),
         id: 'song_004',
         title: 'Neon Lights',
-        artist: 'The Echoes',
-        albumArt: 'https://via.placeholder.com/500?text=Album+Cover',
+        artistId: 'artist_001',
+        albumId: 'album_001',
+        albumName: 'Midnight Memories',
+        audioUrl:
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
+        albumArt: 'https://picsum.photos/400?random=${100}',
         duration: '5:02',
       ),
       Song(
-        artistDetails: Artist(
+        artist: Artist(
           name: 'The Echoes',
           id: 'artist_001',
-          imageUrl: 'https://via.placeholder.com/500?text=Artist+Cover',
+          imageUrl: 'https://picsum.photos/400?random=${100}',
           bio:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
           followers: 1000,
@@ -142,15 +159,19 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         ),
         id: 'song_005',
         title: 'Whispers in the Dark',
-        artist: 'The Echoes',
-        albumArt: 'https://via.placeholder.com/500?text=Album+Cover',
+        artistId: 'artist_001',
+        albumId: 'album_001',
+        albumName: 'Midnight Memories',
+        audioUrl:
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
+        albumArt: 'https://picsum.photos/400?random=${100}',
         duration: '4:30',
       ),
       Song(
-        artistDetails: Artist(
+        artist: Artist(
           name: 'The Echoes',
           id: 'artist_001',
-          imageUrl: 'https://via.placeholder.com/500?text=Artist+Cover',
+          imageUrl: 'https://picsum.photos/400?random=${100}',
           bio:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
           followers: 1000,
@@ -162,15 +183,19 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         ),
         id: 'song_006',
         title: 'Lost in Time',
-        artist: 'The Echoes',
-        albumArt: 'https://via.placeholder.com/500?text=Album+Cover',
+        artistId: 'artist_001',
+        albumId: 'album_001',
+        albumName: 'Midnight Memories',
+        audioUrl:
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3',
+        albumArt: 'https://picsum.photos/400?random=${100}',
         duration: '3:22',
       ),
       Song(
-        artistDetails: Artist(
+        artist: Artist(
           name: 'The Echoes',
           id: 'artist_001',
-          imageUrl: 'https://via.placeholder.com/500?text=Artist+Cover',
+          imageUrl: 'https://picsum.photos/400?random=${100}',
           bio:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
           followers: 1000,
@@ -182,15 +207,19 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         ),
         id: 'song_007',
         title: 'Memories Fade',
-        artist: 'The Echoes',
-        albumArt: 'https://via.placeholder.com/500?text=Album+Cover',
+        artistId: 'artist_001',
+        albumId: 'album_001',
+        albumName: 'Midnight Memories',
+        audioUrl:
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3',
+        albumArt: 'https://picsum.photos/400?random=${100}',
         duration: '4:15',
       ),
       Song(
-        artistDetails: Artist(
+        artist: Artist(
           name: 'The Echoes',
           id: 'artist_001',
-          imageUrl: 'https://via.placeholder.com/500?text=Artist+Cover',
+          imageUrl: 'https://picsum.photos/400?random=${100}',
           bio:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
           followers: 1000,
@@ -202,8 +231,12 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         ),
         id: 'song_008',
         title: 'Eternal Flame',
-        artist: 'The Echoes',
-        albumArt: 'https://via.placeholder.com/500?text=Album+Cover',
+        artistId: 'artist_001',
+        albumId: 'album_001',
+        albumName: 'Midnight Memories',
+        audioUrl:
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3',
+        albumArt: 'https://picsum.photos/400?random=${100}',
         duration: '3:48',
       ),
     ],
@@ -260,7 +293,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         action: SnackBarAction(
           label: 'View Queue',
           onPressed: () {
-            context.push('/download-queue');
+            context.push('/downloads');
           },
         ),
       ),
@@ -420,7 +453,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
   Artist _getArtistDetails() {
     final tracks = List<Song>.from(albumData['tracks']);
     if (tracks.isNotEmpty) {
-      return tracks[0].artistDetails;
+      return tracks[0].artist;
     }
 
     // Fallback if no artist details are available
@@ -510,7 +543,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
                   track.title,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(track.artist),
+                subtitle: Text(track.artist.name),
               ),
               const Divider(height: 1),
               if (status == null || status == DownloadStatus.error)
@@ -673,7 +706,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
         slivers: [
           // App bar with album cover as background
           SliverAppBar(
-            expandedHeight: 300,
+            expandedHeight: 200,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
@@ -695,7 +728,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
                 children: [
                   // Album cover image
                   Image.network(
-                    albumData['coverArt'],
+                    'https://picsum.photos/400?random=${100}',
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
@@ -716,7 +749,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withOpacity(0.7),
+                          Colors.black.withValues(alpha: 0.7),
                         ],
                         stops: const [0.7, 1.0],
                       ),
@@ -749,7 +782,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Tracks',
+                    'Songs',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Text(
@@ -812,6 +845,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
               final isCurrentlyPlaying = currentPlayingIndex == index;
 
               return _buildTrackItem(
+                tracks,
                 track,
                 index,
                 isCurrentlyPlaying,
@@ -988,7 +1022,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${artist.followers} followers • ${artist.monthlyListeners} monthly listeners',
+                      '${artist.followers} followers • ${artist.monthlyListeners}',
                       style: TextStyle(color: Colors.grey[400], fontSize: 12),
                     ),
                   ],
@@ -1085,6 +1119,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
   }
 
   Widget _buildTrackItem(
+    List<Song> playlist,
     Song track,
     int index,
     bool isCurrentlyPlaying,
@@ -1095,6 +1130,14 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
 
     return InkWell(
       onTap: () {
+        // Play the song using SongNotifier
+        // Get the index of this song in the recently played list
+        final songIndex = playlist.indexWhere((s) => s.id == track.id);
+
+        // Play the entire recently played list starting from this song
+        ref
+            .read(songNotifierProvider.notifier)
+            .playPlaylist(playlist, startIndex: songIndex >= 0 ? songIndex : 0);
         setState(() {
           if (currentPlayingIndex == index) {
             // Toggle play/pause for current track
@@ -1155,7 +1198,7 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
                       ),
                       if (track.artist != albumData['artist'])
                         Text(
-                          track.artist,
+                          track.artist.name,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[400],
@@ -1263,22 +1306,22 @@ class _AlbumDetailScreenState extends ConsumerState<AlbumDetailScreen> {
       {
         'title': 'Morning Light',
         'artist': 'The Echoes',
-        'coverArt': 'https://via.placeholder.com/200?text=Album+1',
+        'coverArt': 'https://picsum.photos/200?random=${1}',
       },
       {
         'title': 'Eternal Sunset',
         'artist': 'The Echoes',
-        'coverArt': 'https://via.placeholder.com/200?text=Album+2',
+        'coverArt': 'https://picsum.photos/200?random=${2}',
       },
       {
         'title': 'Daybreak',
         'artist': 'The Echoes',
-        'coverArt': 'https://via.placeholder.com/200?text=Album+3',
+        'coverArt': 'https://picsum.photos/200?random=${3}',
       },
       {
         'title': 'Nightfall',
         'artist': 'The Echoes',
-        'coverArt': 'https://via.placeholder.com/200?text=Album+4',
+        'coverArt': 'https://picsum.photos/200?random=${4}',
       },
     ];
 

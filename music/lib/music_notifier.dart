@@ -17,7 +17,12 @@ class MusicNotifier extends StateNotifier<PlayerState> {
     final List<Song> samplePlaylist = List.generate(
       20,
       (index) => Song(
-        artistDetails: Artist(
+        artistId: 'artist_${(index % 5) + 1}',
+        albumId: 'album_${(index % 8) + 1}',
+        albumName: 'Album ${(index % 8) + 1}',
+        audioUrl:
+            'https://via.placeholder.com/300?text=Album+${(index % 8) + 1}',
+        artist: Artist(
           name: 'Artist ${(index % 5) + 1}',
           imageUrl:
               'https://via.placeholder.com/300?text=Artist+${(index % 5) + 1}',
@@ -32,7 +37,6 @@ class MusicNotifier extends StateNotifier<PlayerState> {
         ),
         id: 'song_$index',
         title: 'Song ${index + 1}',
-        artist: 'Artist ${(index % 5) + 1}',
         albumArt:
             'https://via.placeholder.com/300?text=Album+${(index % 8) + 1}',
         duration:

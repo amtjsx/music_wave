@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -8,20 +8,17 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _isFollowing = false;
-
+  
   // Sample user data
   final Map<String, dynamic> _userData = {
     'username': 'Sarah Johnson',
     'handle': '@sarahmusic',
-    'bio':
-        'Music producer | DJ | Vinyl collector\nLover of all things audio 🎵\nBooking: sarah@musicwave.com',
+    'bio': 'Music producer | DJ | Vinyl collector\nLover of all things audio 🎵\nBooking: sarah@musicwave.com',
     'profileImage': 'https://randomuser.me/api/portraits/women/44.jpg',
-    'coverImage':
-        'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    'coverImage': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     'followers': '24.5K',
     'following': '867',
     'posts': '342',
@@ -30,15 +27,14 @@ class _ProfileScreenState extends State<ProfileScreen>
     'website': 'musicwave.com/sarah',
     'joinDate': 'Joined March 2018',
   };
-
+  
   // Sample posts data
   final List<Map<String, dynamic>> _musicPosts = [
     {
       'type': 'track',
       'title': 'Summer Vibes',
       'artist': 'Sarah Johnson',
-      'coverArt':
-          'https://images.unsplash.com/photo-1487180144351-b8472da7d491?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80',
+      'coverArt': 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80',
       'duration': '3:45',
       'plays': '1.2M',
       'date': '2 weeks ago',
@@ -47,8 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       'type': 'track',
       'title': 'Midnight Dreams',
       'artist': 'Sarah Johnson ft. Alex Rivera',
-      'coverArt':
-          'https://images.unsplash.com/photo-1614149162883-504ce4d13909?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80',
+      'coverArt': 'https://images.unsplash.com/photo-1614149162883-504ce4d13909?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80',
       'duration': '4:12',
       'plays': '876K',
       'date': '1 month ago',
@@ -57,20 +52,18 @@ class _ProfileScreenState extends State<ProfileScreen>
       'type': 'track',
       'title': 'Electric Soul',
       'artist': 'Sarah Johnson',
-      'coverArt':
-          'https://images.unsplash.com/photo-1557672172-298e090bd0f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+      'coverArt': 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
       'duration': '3:28',
       'plays': '2.3M',
       'date': '3 months ago',
     },
   ];
-
+  
   final List<Map<String, dynamic>> _playlistPosts = [
     {
       'title': 'Morning Chill',
       'description': 'Start your day with these relaxing tunes',
-      'coverArt':
-          'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80',
+      'coverArt': 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80',
       'tracks': '24 tracks',
       'followers': '12.4K',
       'date': '1 week ago',
@@ -78,8 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     {
       'title': 'Workout Mix 2023',
       'description': 'High energy tracks to fuel your workout',
-      'coverArt':
-          'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+      'coverArt': 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       'tracks': '32 tracks',
       'followers': '45.7K',
       'date': '2 weeks ago',
@@ -87,20 +79,18 @@ class _ProfileScreenState extends State<ProfileScreen>
     {
       'title': 'Late Night Vibes',
       'description': 'Perfect for those late night sessions',
-      'coverArt':
-          'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+      'coverArt': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       'tracks': '18 tracks',
       'followers': '32.1K',
       'date': '1 month ago',
     },
   ];
-
+  
   final List<Map<String, dynamic>> _albumPosts = [
     {
       'title': 'Neon Dreams',
       'artist': 'Sarah Johnson',
-      'coverArt':
-          'https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1626&q=80',
+      'coverArt': 'https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1626&q=80',
       'tracks': '12 tracks',
       'releaseDate': 'Released: Jan 15, 2023',
       'plays': '4.5M',
@@ -108,14 +98,13 @@ class _ProfileScreenState extends State<ProfileScreen>
     {
       'title': 'Urban Echoes',
       'artist': 'Sarah Johnson',
-      'coverArt':
-          'https://images.unsplash.com/photo-1557672172-298e090bd0f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+      'coverArt': 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
       'tracks': '10 tracks',
       'releaseDate': 'Released: Aug 3, 2022',
       'plays': '6.2M',
     },
   ];
-
+  
   final List<Map<String, dynamic>> _artistPosts = [
     {
       'name': 'Alex Rivera',
@@ -139,12 +128,11 @@ class _ProfileScreenState extends State<ProfileScreen>
       'date': 'Collaborated 3 months ago',
     },
   ];
-
+  
   final List<Map<String, dynamic>> _otherPosts = [
     {
       'type': 'text',
-      'content':
-          'Just finished recording my new track! Can\'t wait to share it with you all next week. Stay tuned! 🎵 #newmusic #comingsoon',
+      'content': 'Just finished recording my new track! Can\'t wait to share it with you all next week. Stay tuned! 🎵 #newmusic #comingsoon',
       'likes': '3.2K',
       'comments': '245',
       'shares': '87',
@@ -155,49 +143,39 @@ class _ProfileScreenState extends State<ProfileScreen>
       'title': 'Summer Beach Festival',
       'location': 'Venice Beach, CA',
       'date': 'July 15, 2023',
-      'image':
-          'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+      'image': 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       'attending': '12.5K',
       'interested': '34.2K',
     },
     {
       'type': 'text',
-      'content':
-          'Just got my hands on this vintage vinyl collection! Absolute gems in here. What\'s your favorite vinyl record? 💿 #vinylcollection #musiclover',
+      'content': 'Just got my hands on this vintage vinyl collection! Absolute gems in here. What\'s your favorite vinyl record? 💿 #vinylcollection #musiclover',
       'likes': '5.7K',
       'comments': '432',
       'shares': '156',
       'date': '1 week ago',
-      'image':
-          'https://images.unsplash.com/photo-1603048588665-791ca8aea617?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+      'image': 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     },
   ];
-
+  
   // About section data
   final Map<String, dynamic> _aboutData = {
-    'bio':
-        'Music producer and DJ based in Los Angeles. I specialize in electronic, house, and ambient music. I\'ve been producing music for over 10 years and have released 5 albums and numerous singles.',
+    'bio': 'Music producer and DJ based in Los Angeles. I specialize in electronic, house, and ambient music. I\'ve been producing music for over 10 years and have released 5 albums and numerous singles.',
     'influences': ['Daft Punk', 'Bonobo', 'Tycho', 'Four Tet', 'Jon Hopkins'],
-    'equipment': [
-      'Ableton Live',
-      'Native Instruments Komplete',
-      'Roland TR-8',
-      'Moog Sub 37',
-      'Pioneer DJ equipment',
-    ],
+    'equipment': ['Ableton Live', 'Native Instruments Komplete', 'Roland TR-8', 'Moog Sub 37', 'Pioneer DJ equipment'],
     'education': 'Berklee College of Music, Electronic Music Production',
     'awards': [
       'Best New Artist - Electronic Music Awards 2019',
       'Best House Track - DJ Mag Awards 2021',
-      'Producer of the Year - LA Music Scene 2022',
+      'Producer of the Year - LA Music Scene 2022'
     ],
     'contact': {
       'email': 'sarah@musicwave.com',
       'booking': 'booking@sarahjohnson.com',
-      'management': 'mgmt@wavelength.com',
-    },
+      'management': 'mgmt@wavelength.com'
+    }
   };
-
+  
   // Photos data
   final List<String> _photos = [
     'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
@@ -227,331 +205,330 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            // App Bar with Cover Image
-            SliverAppBar(
-              expandedHeight: 200,
-              pinned: true,
-              backgroundColor: const Color(0xFF1A1A1A),
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.pop(context),
+      body: CustomScrollView(
+        slivers: [
+          // App Bar with Cover Image
+          SliverAppBar(
+            expandedHeight: 200,
+            pinned: true,
+            backgroundColor: const Color(0xFF1A1A1A),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.more_vert, color: Colors.white),
+                onPressed: () {
+                  _showProfileOptions(context);
+                },
               ),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.more_vert, color: Colors.white),
-                  onPressed: () {
-                    _showProfileOptions(context);
-                  },
-                ),
-              ],
-              flexibleSpace: FlexibleSpaceBar(
-                background: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    // Cover image
-                    CachedNetworkImage(
-                      imageUrl: _userData['coverImage'],
-                      fit: BoxFit.cover,
-                      placeholder:
-                          (context, url) =>
-                              Container(color: const Color(0xFF2A2A2A)),
-                      errorWidget:
-                          (context, url, error) => Container(
-                            color: const Color(0xFF2A2A2A),
-                            child: const Icon(Icons.error, color: Colors.white),
-                          ),
+            ],
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Cover image
+                  CachedNetworkImage(
+                    imageUrl: _userData['coverImage'],
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: const Color(0xFF2A2A2A),
                     ),
-                    // Gradient overlay for better text visibility
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Colors.black.withOpacity(0.7),
-                          ],
-                        ),
+                    errorWidget: (context, url, error) => Container(
+                      color: const Color(0xFF2A2A2A),
+                      child: const Icon(Icons.error, color: Colors.white),
+                    ),
+                  ),
+                  // Gradient overlay for better text visibility
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.7),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
 
-            // Profile Info Section
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.only(bottom: 16),
-                color: const Color(0xFF1A1A1A),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Profile picture, name, and follow button
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          // Profile picture
-                          Container(
-                            width: 100,
-                            height: 100,
-                            // margin: const EdgeInsets.only(top: -50),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color(0xFF1A1A1A),
-                                width: 4,
-                              ),
-                              borderRadius: BorderRadius.circular(50),
+          // Profile Info Section
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 16),
+              color: const Color(0xFF1A1A1A),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Profile picture, name, and follow button
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        // Profile picture
+                        Container(
+                          width: 100,
+                          height: 100,
+                          margin: const EdgeInsets.only(top: -50),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(0xFF1A1A1A),
+                              width: 4,
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(46),
-                              child: CachedNetworkImage(
-                                imageUrl: _userData['profileImage'],
-                                fit: BoxFit.cover,
-                                placeholder:
-                                    (context, url) => Container(
-                                      color: const Color(0xFF2A2A2A),
-                                    ),
-                                errorWidget:
-                                    (context, url, error) => Container(
-                                      color: const Color(0xFF2A2A2A),
-                                      child: const Icon(
-                                        Icons.person,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(46),
+                            child: CachedNetworkImage(
+                              imageUrl: _userData['profileImage'],
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Container(
+                                color: const Color(0xFF2A2A2A),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                color: const Color(0xFF2A2A2A),
+                                child: const Icon(Icons.person, color: Colors.white),
                               ),
                             ),
                           ),
-                          const SizedBox(width: 16),
-                          // Name and handle
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      _userData['username'],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                        ),
+                        const SizedBox(width: 16),
+                        // Name and handle
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    _userData['username'],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    if (_userData['verified'])
-                                      Container(
-                                        margin: const EdgeInsets.only(left: 4),
-                                        child: const Icon(
-                                          Icons.verified,
-                                          color: Color(0xFF6366F1),
-                                          size: 18,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                                Text(
-                                  _userData['handle'],
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 16,
                                   ),
+                                  if (_userData['verified'])
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 4),
+                                      child: const Icon(
+                                        Icons.verified,
+                                        color: Color(0xFF6366F1),
+                                        size: 18,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              Text(
+                                _userData['handle'],
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          // Follow button
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _isFollowing = !_isFollowing;
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  _isFollowing
-                                      ? const Color(0xFF2A2A2A)
-                                      : const Color(0xFF6366F1),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 10,
-                              ),
-                            ),
-                            child: Text(
-                              _isFollowing ? 'Following' : 'Follow',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // Bio
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        _userData['bio'],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
                         ),
+                        // Follow button
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _isFollowing = !_isFollowing;
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _isFollowing
+                                ? const Color(0xFF2A2A2A)
+                                : const Color(0xFF6366F1),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 10,
+                            ),
+                          ),
+                          child: Text(
+                            _isFollowing ? 'Following' : 'Follow',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Bio
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      _userData['bio'],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
                       ),
                     ),
+                  ),
 
-                    const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                    // Stats (followers, following, posts)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          _buildStatItem(_userData['posts'], 'Posts'),
-                          const SizedBox(width: 24),
-                          _buildStatItem(_userData['followers'], 'Followers'),
-                          const SizedBox(width: 24),
-                          _buildStatItem(_userData['following'], 'Following'),
-                        ],
-                      ),
+                  // Stats (followers, following, posts)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _buildStatItem(_userData['posts'], 'Posts'),
+                        const SizedBox(width: 24),
+                        _buildStatItem(_userData['followers'], 'Followers'),
+                        const SizedBox(width: 24),
+                        _buildStatItem(_userData['following'], 'Following'),
+                      ],
                     ),
+                  ),
 
-                    const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                    // Location, website, join date
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on,
+                  // Location, website, join date
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          color: Colors.grey,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          _userData['location'],
+                          style: const TextStyle(
                             color: Colors.grey,
-                            size: 16,
+                            fontSize: 14,
                           ),
-                          const SizedBox(width: 4),
-                          Text(
-                            _userData['location'],
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
+                        ),
+                        const SizedBox(width: 16),
+                        const Icon(
+                          Icons.link,
+                          color: Colors.grey,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          _userData['website'],
+                          style: const TextStyle(
+                            color: Color(0xFF6366F1),
+                            fontSize: 14,
                           ),
-                          const SizedBox(width: 16),
-                          const Icon(Icons.link, color: Colors.grey, size: 16),
-                          const SizedBox(width: 4),
-                          Text(
-                            _userData['website'],
-                            style: const TextStyle(
-                              color: Color(0xFF6366F1),
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
 
-                    const SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.calendar_today,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.calendar_today,
+                          color: Colors.grey,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          _userData['joinDate'],
+                          style: const TextStyle(
                             color: Colors.grey,
-                            size: 16,
+                            fontSize: 14,
                           ),
-                          const SizedBox(width: 4),
-                          Text(
-                            _userData['joinDate'],
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
 
-                    const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                    // Action buttons
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildActionButton(Icons.message, 'Message'),
-                          _buildActionButton(Icons.share, 'Share'),
-                          _buildActionButton(Icons.notifications, 'Notify'),
-                        ],
-                      ),
+                  // Action buttons
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildActionButton(Icons.message, 'Message'),
+                        _buildActionButton(Icons.share, 'Share'),
+                        _buildActionButton(Icons.notifications, 'Notify'),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
+          ),
 
-            // Tab Bar
-            SliverPersistentHeader(
-              delegate: _SliverAppBarDelegate(
-                TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  indicatorColor: const Color(0xFF6366F1),
-                  indicatorWeight: 3,
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.grey,
-                  tabs: const [
-                    Tab(text: 'Music'),
-                    Tab(text: 'Playlists'),
-                    Tab(text: 'Albums'),
-                    Tab(text: 'Artists'),
-                    Tab(text: 'Posts'),
-                    Tab(text: 'About'),
-                    Tab(text: 'Photos'),
-                  ],
-                ),
+          // Tab Bar
+          SliverPersistentHeader(
+            delegate: _SliverAppBarDelegate(
+              TabBar(
+                controller: _tabController,
+                isScrollable: true,
+                indicatorColor: const Color(0xFF6366F1),
+                indicatorWeight: 3,
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.grey,
+                tabs: const [
+                  Tab(text: 'Music'),
+                  Tab(text: 'Playlists'),
+                  Tab(text: 'Albums'),
+                  Tab(text: 'Artists'),
+                  Tab(text: 'Posts'),
+                  Tab(text: 'About'),
+                  Tab(text: 'Photos'),
+                ],
               ),
-              pinned: true,
             ),
-          ];
-        },
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            // Music Tab
-            _buildMusicTab(),
+            pinned: true,
+          ),
 
-            // Playlists Tab
-            _buildPlaylistsTab(),
-
-            // Albums Tab
-            _buildAlbumsTab(),
-
-            // Artists Tab
-            _buildArtistsTab(),
-
-            // Posts Tab
-            _buildPostsTab(),
-
-            // About Tab
-            _buildAboutTab(),
-
-            // Photos Tab
-            _buildPhotosTab(),
-          ],
-        ),
+          // Tab content
+          SliverFillRemaining(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                // Music Tab
+                _buildMusicTab(),
+                
+                // Playlists Tab
+                _buildPlaylistsTab(),
+                
+                // Albums Tab
+                _buildAlbumsTab(),
+                
+                // Artists Tab
+                _buildArtistsTab(),
+                
+                // Posts Tab
+                _buildPostsTab(),
+                
+                // About Tab
+                _buildAboutTab(),
+                
+                // Photos Tab
+                _buildPhotosTab(),
+              ],
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: Container(
         height: 60,
@@ -563,9 +540,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               height: 60,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1626&q=80',
-                  ),
+                  image: NetworkImage('https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1626&q=80'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -624,7 +599,13 @@ class _ProfileScreenState extends State<ProfileScreen>
             fontSize: 18,
           ),
         ),
-        Text(label, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
+          ),
+        ),
       ],
     );
   }
@@ -640,7 +621,11 @@ class _ProfileScreenState extends State<ProfileScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: Colors.white, size: 18),
+          Icon(
+            icon,
+            color: Colors.white,
+            size: 18,
+          ),
           const SizedBox(width: 6),
           Text(
             label,
@@ -712,11 +697,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       style: const TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     const SizedBox(width: 12),
-                    const Icon(
-                      Icons.calendar_today,
-                      color: Colors.grey,
-                      size: 14,
-                    ),
+                    const Icon(Icons.calendar_today, color: Colors.grey, size: 14),
                     const SizedBox(width: 4),
                     Text(
                       post['date'],
@@ -754,9 +735,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             children: [
               // Playlist cover image
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(12),
-                ),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.network(
                   playlist['coverArt'],
                   height: 180,
@@ -785,42 +764,25 @@ class _ProfileScreenState extends State<ProfileScreen>
                     const SizedBox(height: 12),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.queue_music,
-                          color: Colors.grey,
-                          size: 16,
-                        ),
+                        const Icon(Icons.queue_music, color: Colors.grey, size: 16),
                         const SizedBox(width: 4),
                         Text(
                           playlist['tracks'],
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          ),
+                          style: const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                         const SizedBox(width: 16),
                         const Icon(Icons.people, color: Colors.grey, size: 16),
                         const SizedBox(width: 4),
                         Text(
                           playlist['followers'],
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          ),
+                          style: const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                         const SizedBox(width: 16),
-                        const Icon(
-                          Icons.calendar_today,
-                          color: Colors.grey,
-                          size: 16,
-                        ),
+                        const Icon(Icons.calendar_today, color: Colors.grey, size: 16),
                         const SizedBox(width: 4),
                         Text(
                           playlist['date'],
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          ),
+                          style: const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -838,11 +800,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                           child: const Row(
                             children: [
-                              Icon(
-                                Icons.play_arrow,
-                                color: Colors.white,
-                                size: 16,
-                              ),
+                              Icon(Icons.play_arrow, color: Colors.white, size: 16),
                               SizedBox(width: 4),
                               Text(
                                 'Play',
@@ -946,34 +904,21 @@ class _ProfileScreenState extends State<ProfileScreen>
                       const SizedBox(height: 12),
                       Text(
                         album['tracks'],
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
-                        ),
+                        style: const TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         album['releaseDate'],
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
-                        ),
+                        style: const TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          const Icon(
-                            Icons.play_arrow,
-                            color: Colors.grey,
-                            size: 14,
-                          ),
+                          const Icon(Icons.play_arrow, color: Colors.grey, size: 14),
                           const SizedBox(width: 4),
                           Text(
                             album['plays'],
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
+                            style: const TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                         ],
                       ),
@@ -1080,11 +1025,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       style: const TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     const SizedBox(width: 12),
-                    const Icon(
-                      Icons.calendar_today,
-                      color: Colors.grey,
-                      size: 14,
-                    ),
+                    const Icon(Icons.calendar_today, color: Colors.grey, size: 14),
                     const SizedBox(width: 4),
                     Text(
                       artist['date'],
@@ -1095,7 +1036,10 @@ class _ProfileScreenState extends State<ProfileScreen>
               ],
             ),
             trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 6,
+              ),
               decoration: BoxDecoration(
                 color: const Color(0xFF6366F1),
                 borderRadius: BorderRadius.circular(16),
@@ -1173,10 +1117,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                         Text(
                           post['date'],
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
+                          style: const TextStyle(color: Colors.grey, fontSize: 12),
                         ),
                       ],
                     ),
@@ -1188,13 +1129,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ],
                 ),
                 const SizedBox(height: 12),
-
+                
                 // Post content
                 Text(
                   post['content'] ?? '',
                   style: const TextStyle(color: Colors.white),
                 ),
-
+                
                 // Post image if available
                 if (post['image'] != null) ...[
                   const SizedBox(height: 12),
@@ -1207,7 +1148,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ),
                   ),
                 ],
-
+                
                 // Event details if it's an event post
                 if (post['type'] == 'event') ...[
                   const SizedBox(height: 12),
@@ -1231,36 +1172,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Icon(
-                              Icons.location_on,
-                              color: Colors.grey,
-                              size: 14,
-                            ),
+                            const Icon(Icons.location_on, color: Colors.grey, size: 14),
                             const SizedBox(width: 4),
                             Text(
                               post['location'],
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
+                              style: const TextStyle(color: Colors.grey, fontSize: 14),
                             ),
                           ],
                         ),
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Icon(
-                              Icons.calendar_today,
-                              color: Colors.grey,
-                              size: 14,
-                            ),
+                            const Icon(Icons.calendar_today, color: Colors.grey, size: 14),
                             const SizedBox(width: 4),
                             Text(
                               post['date'],
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
+                              style: const TextStyle(color: Colors.grey, fontSize: 14),
                             ),
                           ],
                         ),
@@ -1310,39 +1237,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ),
                   ),
                 ],
-
+                
                 const SizedBox(height: 12),
-
+                
                 // Post stats (likes, comments, shares)
                 Row(
                   children: [
-                    const Icon(
-                      Icons.favorite_border,
-                      color: Colors.grey,
-                      size: 20,
-                    ),
+                    const Icon(Icons.favorite_border, color: Colors.grey, size: 20),
                     const SizedBox(width: 4),
                     Text(
                       post['likes'] ?? '0',
                       style: const TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                     const SizedBox(width: 16),
-                    const Icon(
-                      Icons.comment_outlined,
-                      color: Colors.grey,
-                      size: 20,
-                    ),
+                    const Icon(Icons.comment_outlined, color: Colors.grey, size: 20),
                     const SizedBox(width: 4),
                     Text(
                       post['comments'] ?? '0',
                       style: const TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                     const SizedBox(width: 16),
-                    const Icon(
-                      Icons.share_outlined,
-                      color: Colors.grey,
-                      size: 20,
-                    ),
+                    const Icon(Icons.share_outlined, color: Colors.grey, size: 20),
                     const SizedBox(width: 4),
                     Text(
                       post['shares'] ?? '0',
@@ -1389,9 +1304,9 @@ class _ProfileScreenState extends State<ProfileScreen>
             ],
           ),
         ),
-
+        
         const SizedBox(height: 16),
-
+        
         // Influences section
         Container(
           padding: const EdgeInsets.all(16),
@@ -1414,33 +1329,32 @@ class _ProfileScreenState extends State<ProfileScreen>
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children:
-                    (_aboutData['influences'] as List).map((influence) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2A2A2A),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          influence,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                children: (_aboutData['influences'] as List).map((influence) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2A2A2A),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      influence,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ),
         ),
-
+        
         const SizedBox(height: 16),
-
+        
         // Equipment section
         Container(
           padding: const EdgeInsets.all(16),
@@ -1462,33 +1376,28 @@ class _ProfileScreenState extends State<ProfileScreen>
               const SizedBox(height: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                    (_aboutData['equipment'] as List).map((equipment) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.circle,
-                              color: Color(0xFF6366F1),
-                              size: 8,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              equipment,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
+                children: (_aboutData['equipment'] as List).map((equipment) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.circle, color: Color(0xFF6366F1), size: 8),
+                        const SizedBox(width: 8),
+                        Text(
+                          equipment,
+                          style: const TextStyle(color: Colors.white),
                         ),
-                      );
-                    }).toList(),
+                      ],
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ),
         ),
-
+        
         const SizedBox(height: 16),
-
+        
         // Education section
         Container(
           padding: const EdgeInsets.all(16),
@@ -1521,9 +1430,9 @@ class _ProfileScreenState extends State<ProfileScreen>
             ],
           ),
         ),
-
+        
         const SizedBox(height: 16),
-
+        
         // Awards section
         Container(
           padding: const EdgeInsets.all(16),
@@ -1545,36 +1454,31 @@ class _ProfileScreenState extends State<ProfileScreen>
               const SizedBox(height: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                    (_aboutData['awards'] as List).map((award) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.emoji_events,
-                              color: Color(0xFFFFD700),
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                award,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
+                children: (_aboutData['awards'] as List).map((award) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(Icons.emoji_events, color: Color(0xFFFFD700), size: 20),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            award,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
-                      );
-                    }).toList(),
+                      ],
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ),
         ),
-
+        
         const SizedBox(height: 16),
-
+        
         // Contact section
         Container(
           padding: const EdgeInsets.all(16),
@@ -1607,11 +1511,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               const SizedBox(height: 4),
               Row(
                 children: [
-                  const Icon(
-                    Icons.calendar_today,
-                    color: Color(0xFF6366F1),
-                    size: 20,
-                  ),
+                  const Icon(Icons.calendar_today, color: Color(0xFF6366F1), size: 20),
                   const SizedBox(width: 8),
                   Text(
                     _aboutData['contact']['booking'],
@@ -1622,11 +1522,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               const SizedBox(height: 4),
               Row(
                 children: [
-                  const Icon(
-                    Icons.business,
-                    color: Color(0xFF6366F1),
-                    size: 20,
-                  ),
+                  const Icon(Icons.business, color: Color(0xFF6366F1), size: 20),
                   const SizedBox(width: 8),
                   Text(
                     _aboutData['contact']['management'],
@@ -1661,20 +1557,18 @@ class _ProfileScreenState extends State<ProfileScreen>
             child: CachedNetworkImage(
               imageUrl: _photos[index],
               fit: BoxFit.cover,
-              placeholder:
-                  (context, url) => Container(
-                    color: const Color(0xFF2A2A2A),
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xFF6366F1),
-                      ),
-                    ),
+              placeholder: (context, url) => Container(
+                color: const Color(0xFF2A2A2A),
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF6366F1),
                   ),
-              errorWidget:
-                  (context, url, error) => Container(
-                    color: const Color(0xFF2A2A2A),
-                    child: const Icon(Icons.error, color: Colors.white),
-                  ),
+                ),
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: const Color(0xFF2A2A2A),
+                child: const Icon(Icons.error, color: Colors.white),
+              ),
             ),
           ),
         );
@@ -1719,7 +1613,10 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget _buildOptionItem(IconData icon, String label) {
     return ListTile(
       leading: Icon(icon, color: Colors.white),
-      title: Text(label, style: const TextStyle(color: Colors.white)),
+      title: Text(
+        label,
+        style: const TextStyle(color: Colors.white),
+      ),
       onTap: () {
         Navigator.pop(context);
       },
@@ -1733,12 +1630,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this.tabBar);
 
   @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return Container(color: const Color(0xFF1A1A1A), child: tabBar);
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: const Color(0xFF1A1A1A),
+      child: tabBar,
+    );
   }
 
   @override

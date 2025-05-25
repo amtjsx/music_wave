@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LiveEventsAllScreen extends StatefulWidget {
   const LiveEventsAllScreen({super.key});
@@ -254,7 +255,9 @@ class _LiveEventsAllScreenState extends State<LiveEventsAllScreen>
             actions: [
               IconButton(
                 icon: const Icon(Icons.search, color: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/live-event-search');
+                },
               ),
               IconButton(
                 icon: const Icon(Icons.filter_list, color: Colors.white),
@@ -325,11 +328,11 @@ class _LiveEventsAllScreenState extends State<LiveEventsAllScreen>
           // Filter tabs
           SliverToBoxAdapter(
             child: Container(
-              height: 50,
+              height: 30,
               margin: const EdgeInsets.only(top: 8),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 itemCount: _filters.length,
                 itemBuilder: (context, index) {
                   final isSelected = _filters[index] == _currentFilter;
@@ -412,17 +415,14 @@ class _LiveEventsAllScreenState extends State<LiveEventsAllScreen>
 
           // Grid of live events
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 0),
+            sliver: SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
                 final event = filteredEvents[index];
-                return _buildLiveEventCard(event);
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: _buildLiveEventCard(event),
+                );
               }, childCount: filteredEvents.length),
             ),
           ),
@@ -431,62 +431,6 @@ class _LiveEventsAllScreenState extends State<LiveEventsAllScreen>
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
-      // Mini player placeholder
-      bottomNavigationBar: Container(
-        height: 60,
-        color: const Color(0xFF1A1A1A),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage('https://picsum.photos/200?random=1'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Blinding Lights',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    'The Weeknd',
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.skip_previous, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.pause, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.skip_next, color: Colors.white),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -494,10 +438,9 @@ class _LiveEventsAllScreenState extends State<LiveEventsAllScreen>
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -512,9 +455,6 @@ class _LiveEventsAllScreenState extends State<LiveEventsAllScreen>
               Container(
                 height: 120,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(12),
-                  ),
                   image: DecorationImage(
                     image: NetworkImage(event['image']),
                     fit: BoxFit.cover,
@@ -666,7 +606,9 @@ class _LiveEventsAllScreenState extends State<LiveEventsAllScreen>
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push('/live-event-detail/${event['id']}');
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF6366F1),
                           foregroundColor: Colors.white,

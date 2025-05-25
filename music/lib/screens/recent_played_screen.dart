@@ -1,15 +1,19 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:music/models/song.dart';
+import 'package:music/services/song_service.dart';
 
-class RecentlyPlayedScreen extends StatefulWidget {
+class RecentlyPlayedScreen extends ConsumerStatefulWidget {
   const RecentlyPlayedScreen({super.key});
 
   @override
-  State<RecentlyPlayedScreen> createState() => _RecentlyPlayedScreenState();
+  ConsumerState<RecentlyPlayedScreen> createState() =>
+      _RecentlyPlayedScreenState();
 }
 
-class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen>
+class _RecentlyPlayedScreenState extends ConsumerState<RecentlyPlayedScreen>
     with TickerProviderStateMixin {
   late TabController _filterController;
   String _currentFilter = 'All';
@@ -25,6 +29,7 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen>
     'Podcasts',
   ];
   final List<String> _sortOptions = ['Recent', 'Most Played', 'Alphabetical'];
+  List<Song> _recentlyPlayed = [];
 
   late AnimationController _waveController;
   late Animation<double> _waveAnimation;
@@ -43,6 +48,36 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen>
       begin: 0,
       end: 2 * math.pi,
     ).animate(_waveController);
+    _initializeData();
+  }
+
+  void _initializeData() {
+    // This will be called in initState to load data from SongNotifier
+    final songNotifier = ref.read(songNotifierProvider.notifier);
+    final playerState = ref.read(songNotifierProvider);
+
+    // Load mock data initially
+    final mockSongs = songNotifier.getMockSongs();
+
+    // Group songs by album
+    final albumMap = <String, Map<String, dynamic>>{};
+    for (final song in mockSongs) {
+      if (!albumMap.containsKey(song.albumId)) {
+        albumMap[song.albumId] = {
+          'name': song.albumName,
+          'artist': song.artist.name,
+          'imageUrl': song.albumArt,
+          'year': '2023', // Mock year
+          'isDownloaded': math.Random().nextBool(), // Random for demo
+        };
+      }
+    }
+
+    // Get recently played songs
+    _recentlyPlayed =
+        playerState.recentlyPlayed.isEmpty
+            ? mockSongs.take(4).toList()
+            : playerState.recentlyPlayed;
   }
 
   @override
@@ -55,99 +90,43 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1A1A1A),
+        title: const Text('Recently Played'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: () {},
+          ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.white),
+            onSelected: (value) {
+              if (value == 'sort') {
+                _showSortOptions();
+              } else if (value == 'toggle_wave') {
+                setState(() {
+                  _showWaveAnimation = !_showWaveAnimation;
+                });
+              }
+            },
+            itemBuilder:
+                (context) => [
+                  const PopupMenuItem(value: 'sort', child: Text('Sort by')),
+                  PopupMenuItem(
+                    value: 'toggle_wave',
+                    child: Text(
+                      _showWaveAnimation
+                          ? 'Hide wave animation'
+                          : 'Show wave animation',
+                    ),
+                  ),
+                ],
+          ),
+        ],
+      ),
       backgroundColor: const Color(0xFF0A0A0A),
       body: CustomScrollView(
         slivers: [
-          // App Bar
-          SliverAppBar(
-            backgroundColor: const Color(0xFF1A1A1A),
-            pinned: true,
-            expandedHeight: 120,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () => Navigator.pop(context),
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.search, color: Colors.white),
-                onPressed: () {},
-              ),
-              PopupMenuButton<String>(
-                icon: const Icon(Icons.more_vert, color: Colors.white),
-                onSelected: (value) {
-                  if (value == 'sort') {
-                    _showSortOptions();
-                  } else if (value == 'toggle_wave') {
-                    setState(() {
-                      _showWaveAnimation = !_showWaveAnimation;
-                    });
-                  }
-                },
-                itemBuilder:
-                    (context) => [
-                      const PopupMenuItem(
-                        value: 'sort',
-                        child: Text('Sort by'),
-                      ),
-                      PopupMenuItem(
-                        value: 'toggle_wave',
-                        child: Text(
-                          _showWaveAnimation
-                              ? 'Hide wave animation'
-                              : 'Show wave animation',
-                        ),
-                      ),
-                    ],
-              ),
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              title: const Text(
-                'Recently Played',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              background:
-                  _showWaveAnimation
-                      ? AnimatedBuilder(
-                        animation: _waveAnimation,
-                        builder: (context, child) {
-                          return CustomPaint(
-                            painter: WavePainter(
-                              _waveAnimation.value,
-                              const Color(0xFF6366F1),
-                              const Color(0xFF8B5CF6),
-                            ),
-                          );
-                        },
-                      )
-                      : Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
-                          ),
-                        ),
-                      ),
-            ),
-            bottom: TabBar(
-              controller: _filterController,
-              isScrollable: true,
-              indicatorColor: const Color(0xFF6366F1),
-              indicatorWeight: 3,
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.grey,
-              tabs: _filters.map((filter) => Tab(text: filter)).toList(),
-              onTap: (index) {
-                setState(() {
-                  _currentFilter = _filters[index];
-                });
-              },
-            ),
-          ),
-
           // Current filter and sort info
           SliverToBoxAdapter(
             child: Padding(
@@ -183,211 +162,53 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen>
           // Today Section
           SliverToBoxAdapter(child: _buildSectionHeader('Today')),
           SliverList(
-            delegate: SliverChildListDelegate([
-              _buildRecentItem(
-                title: 'Blinding Lights',
-                subtitle: 'The Weeknd • After Hours',
-                image: 'https://picsum.photos/200?random=1',
-                time: '2 hours ago',
-                type: 'song',
-                duration: '3:20',
-              ),
-              _buildRecentItem(
-                title: 'Summer Vibes 2023',
-                subtitle: 'Playlist • 45 songs',
-                image: 'https://picsum.photos/200?random=2',
-                time: '3 hours ago',
-                type: 'playlist',
-                duration: '2h 35m',
-              ),
-              _buildRecentItem(
-                title: 'Taylor Swift',
-                subtitle: 'Artist',
-                image: 'https://picsum.photos/200?random=3',
-                time: '5 hours ago',
-                type: 'artist',
-              ),
-            ]),
+            delegate: SliverChildListDelegate(
+              _recentlyPlayed
+                  .map((song) => _buildRecentItem(song, 'song'))
+                  .toList(),
+            ),
           ),
 
           // Yesterday Section
           SliverToBoxAdapter(child: _buildSectionHeader('Yesterday')),
           SliverList(
-            delegate: SliverChildListDelegate([
-              _buildRecentItem(
-                title: 'Midnight Memories',
-                subtitle: 'One Direction • Midnight Memories (Deluxe)',
-                image: 'https://picsum.photos/200?random=4',
-                time: '1 day ago',
-                type: 'album',
-                duration: '45m',
-              ),
-              _buildRecentItem(
-                title: 'As It Was',
-                subtitle: 'Harry Styles • Harry\'s House',
-                image: 'https://picsum.photos/200?random=5',
-                time: '1 day ago',
-                type: 'song',
-                duration: '2:47',
-              ),
-              _buildRecentItem(
-                title: 'The Joe Rogan Experience',
-                subtitle: 'Podcast • Episode #1984',
-                image: 'https://picsum.photos/200?random=6',
-                time: '1 day ago',
-                type: 'podcast',
-                duration: '2h 42m',
-              ),
-            ]),
+            delegate: SliverChildListDelegate(
+              _recentlyPlayed
+                  .map((song) => _buildRecentItem(song, 'song'))
+                  .toList(),
+            ),
           ),
 
           // This Week Section
           SliverToBoxAdapter(child: _buildSectionHeader('This Week')),
           SliverList(
-            delegate: SliverChildListDelegate([
-              _buildRecentItem(
-                title: 'Chill Lofi Beats',
-                subtitle: 'Playlist • 78 songs',
-                image: 'https://picsum.photos/200?random=7',
-                time: '2 days ago',
-                type: 'playlist',
-                duration: '4h 12m',
-              ),
-              _buildRecentItem(
-                title: 'Kendrick Lamar',
-                subtitle: 'Artist',
-                image: 'https://picsum.photos/200?random=8',
-                time: '3 days ago',
-                type: 'artist',
-              ),
-              _buildRecentItem(
-                title: 'Positions',
-                subtitle: 'Ariana Grande • Positions',
-                image: 'https://picsum.photos/200?random=9',
-                time: '4 days ago',
-                type: 'album',
-                duration: '41m',
-              ),
-              _buildRecentItem(
-                title: 'Levitating',
-                subtitle: 'Dua Lipa • Future Nostalgia',
-                image: 'https://picsum.photos/200?random=10',
-                time: '5 days ago',
-                type: 'song',
-                duration: '3:23',
-              ),
-              _buildRecentItem(
-                title: 'Workout Mix',
-                subtitle: 'Playlist • 32 songs',
-                image: 'https://picsum.photos/200?random=11',
-                time: '6 days ago',
-                type: 'playlist',
-                duration: '1h 45m',
-              ),
-            ]),
+            delegate: SliverChildListDelegate(
+              _recentlyPlayed
+                  .map((song) => _buildRecentItem(song, 'song'))
+                  .toList(),
+            ),
           ),
 
           // Earlier This Month Section
           SliverToBoxAdapter(child: _buildSectionHeader('Earlier This Month')),
           SliverList(
-            delegate: SliverChildListDelegate([
-              _buildRecentItem(
-                title: 'Doja Cat',
-                subtitle: 'Artist',
-                image: 'https://picsum.photos/200?random=12',
-                time: '2 weeks ago',
-                type: 'artist',
-              ),
-              _buildRecentItem(
-                title: 'Planet Her',
-                subtitle: 'Doja Cat • Planet Her',
-                image: 'https://picsum.photos/200?random=13',
-                time: '2 weeks ago',
-                type: 'album',
-                duration: '44m',
-              ),
-              _buildRecentItem(
-                title: 'Kiss Me More (feat. SZA)',
-                subtitle: 'Doja Cat • Planet Her',
-                image: 'https://picsum.photos/200?random=14',
-                time: '2 weeks ago',
-                type: 'song',
-                duration: '3:28',
-              ),
-              _buildRecentItem(
-                title: 'Road Trip Jams',
-                subtitle: 'Playlist • 45 songs',
-                image: 'https://picsum.photos/200?random=15',
-                time: '3 weeks ago',
-                type: 'playlist',
-                duration: '2h 50m',
-              ),
-            ]),
+            delegate: SliverChildListDelegate(
+              _recentlyPlayed
+                  .map((song) => _buildRecentItem(song, 'song'))
+                  .toList(),
+            ),
           ),
 
           // Bottom spacing
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
-      // Mini player placeholder
-      bottomNavigationBar: Container(
-        height: 60,
-        color: const Color(0xFF1A1A1A),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage('https://picsum.photos/200?random=1'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Blinding Lights',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    'The Weeknd',
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.skip_previous, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.pause, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.skip_next, color: Colors.white),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
+       
+ 
     );
   }
 
+  // Rest of the methods remain the same...
   Widget _buildSectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
@@ -402,14 +223,7 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen>
     );
   }
 
-  Widget _buildRecentItem({
-    required String title,
-    required String subtitle,
-    required String image,
-    required String time,
-    required String type,
-    String? duration,
-  }) {
+  Widget _buildRecentItem(Song song, String type) {
     IconData typeIcon;
     Color typeColor;
 
@@ -439,125 +253,142 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen>
         typeColor = const Color(0xFF6366F1);
     }
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        leading: Stack(
-          children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(type == 'artist' ? 28 : 8),
-                image: DecorationImage(
-                  image: NetworkImage(image),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 0,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: typeColor,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(typeIcon, color: Colors.white, size: 12),
-              ),
-            ),
-          ],
+    return GestureDetector(
+      onTap: () {
+        final songIndex = _recentlyPlayed.indexWhere((s) => s.id == song.id);
+
+        ref
+            .read(songNotifierProvider.notifier)
+            .playPlaylist(
+              _recentlyPlayed,
+              startIndex: songIndex >= 0 ? songIndex : 0,
+            );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1A1A1A),
+          borderRadius: BorderRadius.circular(12),
         ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 8,
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              subtitle,
-              style: const TextStyle(color: Colors.grey, fontSize: 14),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                Icon(Icons.access_time, color: Colors.grey[600], size: 12),
-                const SizedBox(width: 4),
-                Text(
-                  time,
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                ),
-                if (duration != null) ...[
-                  const SizedBox(width: 8),
-                  Container(
-                    width: 3,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[600],
-                      shape: BoxShape.circle,
-                    ),
+          leading: Stack(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    type == 'artist' ? 28 : 8,
                   ),
-                  const SizedBox(width: 8),
-                  Icon(Icons.timer, color: Colors.grey[600], size: 12),
+                  image: DecorationImage(
+                    image: NetworkImage(song.albumArt),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: typeColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(typeIcon, color: Colors.white, size: 12),
+                ),
+              ),
+            ],
+          ),
+          title: Text(
+            song.title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                song.artist.name,
+                style: const TextStyle(color: Colors.grey, fontSize: 14),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(Icons.access_time, color: Colors.grey[600], size: 12),
                   const SizedBox(width: 4),
                   Text(
-                    duration,
+                    song.duration,
                     style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
+                  ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      width: 3,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[600],
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(Icons.timer, color: Colors.grey[600], size: 12),
+                    const SizedBox(width: 4),
+                    Text(
+                      song.duration,
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    ),
+                  ],
                 ],
-              ],
-            ),
-          ],
-        ),
-        trailing: PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert, color: Colors.grey),
-          onSelected: (value) {
-            // Handle menu item selection
-          },
-          itemBuilder:
-              (context) => [
-                const PopupMenuItem(value: 'play', child: Text('Play')),
-                const PopupMenuItem(
-                  value: 'queue',
-                  child: Text('Add to queue'),
-                ),
-                const PopupMenuItem(
-                  value: 'playlist',
-                  child: Text('Add to playlist'),
-                ),
-                const PopupMenuItem(value: 'share', child: Text('Share')),
-                if (type == 'song' || type == 'album' || type == 'playlist')
+              ),
+            ],
+          ),
+          trailing: PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.grey),
+            onSelected: (value) {
+              // Handle menu item selection
+            },
+            itemBuilder:
+                (context) => [
+                  const PopupMenuItem(value: 'play', child: Text('Play')),
                   const PopupMenuItem(
-                    value: 'download',
-                    child: Text('Download'),
+                    value: 'queue',
+                    child: Text('Add to queue'),
                   ),
-                if (type == 'artist')
-                  const PopupMenuItem(value: 'follow', child: Text('Follow')),
-                const PopupMenuItem(
-                  value: 'remove',
-                  child: Text('Remove from history'),
-                ),
-              ],
+                  const PopupMenuItem(
+                    value: 'playlist',
+                    child: Text('Add to playlist'),
+                  ),
+                  const PopupMenuItem(value: 'share', child: Text('Share')),
+                  if (type == 'song' || type == 'album' || type == 'playlist')
+                    const PopupMenuItem(
+                      value: 'download',
+                      child: Text('Download'),
+                    ),
+                  if (type == 'artist')
+                    const PopupMenuItem(value: 'follow', child: Text('Follow')),
+                  const PopupMenuItem(
+                    value: 'remove',
+                    child: Text('Remove from history'),
+                  ),
+                ],
+          ),
+          onTap: () {
+            // Handle item tap
+          },
+          isThreeLine: true,
         ),
-        onTap: () {
-          // Handle item tap
-        },
-        isThreeLine: true,
       ),
     );
   }
@@ -615,69 +446,104 @@ class WavePainter extends CustomPainter {
   final double animationValue;
   final Color color1;
   final Color color2;
+  final double expansionPercent; // Add this parameter
 
-  WavePainter(this.animationValue, this.color1, this.color2);
+  WavePainter(
+    this.animationValue,
+    this.color1,
+    this.color2,
+    this.expansionPercent,
+  );
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint =
+    // Create a gradient background
+    final backgroundPaint =
         Paint()
           ..shader = LinearGradient(
-            colors: [color1.withOpacity(0.3), color2.withOpacity(0.3)],
+            colors: [color1, color2],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-          ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
-          ..style = PaintingStyle.fill;
+          ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
 
-    final path = Path();
-    final waveHeight = size.height * 0.1;
-    final waveLength = size.width * 0.5;
-    final waveOffset = size.height * 0.7;
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      backgroundPaint,
+    );
 
-    path.moveTo(0, size.height);
+    // Only draw waves if we're expanded enough
+    if (expansionPercent > 0.1) {
+      // Scale the wave effect based on expansion percentage
+      final waveOpacity = 0.3 * expansionPercent;
+      final waveHeight = size.height * 0.1 * expansionPercent;
+      final waveLength = size.width * 0.5;
+      // Adjust the wave position based on expansion
+      final waveOffset = size.height * (0.7 + (0.1 * (1.0 - expansionPercent)));
 
-    for (double x = 0; x <= size.width; x += 1) {
-      final y =
-          waveOffset +
-          waveHeight *
-              math.sin((x / waveLength * 2 * math.pi) + animationValue);
-      path.lineTo(x, y);
+      final paint =
+          Paint()
+            ..shader = LinearGradient(
+              colors: [
+                color1.withOpacity(waveOpacity),
+                color2.withOpacity(waveOpacity),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
+            ..style = PaintingStyle.fill;
+
+      final path = Path();
+      path.moveTo(0, size.height);
+
+      for (double x = 0; x <= size.width; x += 1) {
+        final y =
+            waveOffset +
+            waveHeight *
+                math.sin((x / waveLength * 2 * math.pi) + animationValue);
+        path.lineTo(x, y);
+      }
+
+      path.lineTo(size.width, size.height);
+      path.close();
+
+      canvas.drawPath(path, paint);
+
+      // Second wave (offset)
+      final waveHeight2 = size.height * 0.05 * expansionPercent;
+      final waveLength2 = size.width * 0.7;
+      final waveOffset2 =
+          size.height * (0.8 + (0.1 * (1.0 - expansionPercent)));
+
+      final path2 = Path();
+      path2.moveTo(0, size.height);
+
+      for (double x = 0; x <= size.width; x += 1) {
+        final y =
+            waveOffset2 +
+            waveHeight2 *
+                math.sin(
+                  (x / waveLength2 * 2 * math.pi) + animationValue * 1.5,
+                );
+        path2.lineTo(x, y);
+      }
+
+      path2.lineTo(size.width, size.height);
+      path2.close();
+
+      final paint2 =
+          Paint()
+            ..shader = LinearGradient(
+              colors: [
+                color2.withOpacity(waveOpacity * 0.7),
+                color1.withOpacity(waveOpacity * 0.7),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
+            ..style = PaintingStyle.fill;
+
+      canvas.drawPath(path2, paint2);
     }
-
-    path.lineTo(size.width, size.height);
-    path.close();
-
-    canvas.drawPath(path, paint);
-
-    // Second wave (offset)
-    final path2 = Path();
-    final waveHeight2 = size.height * 0.05;
-    final waveLength2 = size.width * 0.7;
-    final waveOffset2 = size.height * 0.8;
-
-    path2.moveTo(0, size.height);
-
-    for (double x = 0; x <= size.width; x += 1) {
-      final y =
-          waveOffset2 +
-          waveHeight2 *
-              math.sin((x / waveLength2 * 2 * math.pi) + animationValue * 1.5);
-      path2.lineTo(x, y);
-    }
-
-    path2.lineTo(size.width, size.height);
-    path2.close();
-
-    final paint2 =
-        Paint()
-          ..shader = LinearGradient(
-            colors: [color2.withOpacity(0.2), color1.withOpacity(0.2)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
-          ..style = PaintingStyle.fill;
-
-    canvas.drawPath(path2, paint2);
   }
 
   @override

@@ -13,7 +13,8 @@ class Playlist {
   final bool isOffline;
   final String? creatorId;
   final String? creatorName;
-  
+  final int playCount;
+
   Playlist({
     required this.id,
     required this.title,
@@ -25,8 +26,9 @@ class Playlist {
     this.isOffline = false,
     this.creatorId,
     this.creatorName,
+    this.playCount = 0,
   });
-  
+
   // Create a new empty playlist
   factory Playlist.create({
     required String title,
@@ -35,6 +37,7 @@ class Playlist {
     bool isOffline = false,
     String? creatorId,
     String? creatorName,
+    int playCount = 0,
   }) {
     final now = DateTime.now();
     return Playlist(
@@ -48,9 +51,10 @@ class Playlist {
       isOffline: isOffline,
       creatorId: creatorId,
       creatorName: creatorName,
+      playCount: playCount,
     );
   }
-  
+
   // Copy with method for immutability
   Playlist copyWith({
     String? id,
@@ -63,6 +67,7 @@ class Playlist {
     bool? isOffline,
     String? creatorId,
     String? creatorName,
+    int? playCount,
   }) {
     return Playlist(
       id: id ?? this.id,
@@ -75,33 +80,28 @@ class Playlist {
       isOffline: isOffline ?? this.isOffline,
       creatorId: creatorId ?? this.creatorId,
       creatorName: creatorName ?? this.creatorName,
+      playCount: playCount ?? this.playCount,
     );
   }
-  
+
   // Add a song to the playlist
   Playlist addSong(Song song) {
     // Check if song already exists in playlist
     if (songs.any((s) => s.id == song.id)) {
       return this;
     }
-    
+
     final updatedSongs = List<Song>.from(songs)..add(song);
-    return copyWith(
-      songs: updatedSongs,
-      updatedAt: DateTime.now(),
-    );
+    return copyWith(songs: updatedSongs, updatedAt: DateTime.now());
   }
-  
+
   // Remove a song from the playlist
   Playlist removeSong(String songId) {
     final updatedSongs = List<Song>.from(songs)
       ..removeWhere((song) => song.id == songId);
-    return copyWith(
-      songs: updatedSongs,
-      updatedAt: DateTime.now(),
-    );
+    return copyWith(songs: updatedSongs, updatedAt: DateTime.now());
   }
-  
+
   // Reorder songs in the playlist
   Playlist reorderSongs(int oldIndex, int newIndex) {
     final updatedSongs = List<Song>.from(songs);
@@ -110,13 +110,10 @@ class Playlist {
     }
     final song = updatedSongs.removeAt(oldIndex);
     updatedSongs.insert(newIndex, song);
-    
-    return copyWith(
-      songs: updatedSongs,
-      updatedAt: DateTime.now(),
-    );
+
+    return copyWith(songs: updatedSongs, updatedAt: DateTime.now());
   }
-  
+
   // Get total duration of the playlist
   Duration get totalDuration {
     return songs.fold(
@@ -124,20 +121,20 @@ class Playlist {
       (total, song) => total + _parseDuration(song.duration),
     );
   }
-  
+
   // Format total duration as string
   String get formattedTotalDuration {
     final duration = totalDuration;
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
-    
+
     if (hours > 0) {
       return '$hours hr ${minutes} min';
     } else {
       return '$minutes min';
     }
   }
-  
+
   // Parse duration string to Duration
   Duration _parseDuration(String durationStr) {
     try {
@@ -157,10 +154,10 @@ class Playlist {
     } catch (e) {
       print('Error parsing duration: $e');
     }
-    
+
     return Duration.zero;
   }
-  
+
   // Convert to Map for storage
   Map<String, dynamic> toMap() {
     return {
@@ -168,7 +165,7 @@ class Playlist {
       'title': title,
       'description': description,
       'coverUrl': coverUrl,
-      'songs': songs.map((song) => song.toMap()).toList(),
+      'songs': songs.map((song) => song.toJson()).toList(),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
       'isOffline': isOffline,
@@ -176,7 +173,7 @@ class Playlist {
       'creatorName': creatorName,
     };
   }
-  
+
   // Create from Map
   factory Playlist.fromMap(Map<String, dynamic> map) {
     return Playlist(
@@ -184,9 +181,10 @@ class Playlist {
       title: map['title'],
       description: map['description'],
       coverUrl: map['coverUrl'],
-      songs: (map['songs'] as List)
-          .map((songMap) => Song.fromMap(songMap))
-          .toList(),
+      songs:
+          (map['songs'] as List)
+              .map((songMap) => Song.fromJson(songMap))
+              .toList(),
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
       isOffline: map['isOffline'] ?? false,
@@ -194,10 +192,10 @@ class Playlist {
       creatorName: map['creatorName'],
     );
   }
-  
+
   // Convert to JSON string
   String toJson() => json.encode(toMap());
-  
+
   // Create from JSON string
   factory Playlist.fromJson(String source) =>
       Playlist.fromMap(json.decode(source));

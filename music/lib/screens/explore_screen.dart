@@ -253,10 +253,10 @@ class _ExploreScreenState extends State<ExploreScreen>
           SliverToBoxAdapter(child: _buildSectionHeader('New Releases')),
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 200,
+              height: 210,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 children: [
                   _buildNewReleaseItem(
                     'Future Nostalgia',
@@ -566,7 +566,7 @@ class _ExploreScreenState extends State<ExploreScreen>
           SliverToBoxAdapter(child: _buildSectionHeader('Popular Podcasts')),
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 200,
+              height: 210,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -643,62 +643,8 @@ class _ExploreScreenState extends State<ExploreScreen>
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
-      // Mini player placeholder
-      bottomNavigationBar: Container(
-        height: 60,
-        color: const Color(0xFF1A1A1A),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage('https://picsum.photos/200?random=1'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Blinding Lights',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    'The Weeknd',
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.skip_previous, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.pause, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.skip_next, color: Colors.white),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
+       
+ 
     );
   }
 

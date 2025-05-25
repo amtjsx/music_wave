@@ -90,7 +90,9 @@ class _LiveScreenState extends State<LiveScreen> with TickerProviderStateMixin {
             actions: [
               IconButton(
                 icon: const Icon(Icons.search, color: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/live-event-search');
+                },
               ),
               IconButton(
                 icon: const Icon(
@@ -308,65 +310,8 @@ class _LiveScreenState extends State<LiveScreen> with TickerProviderStateMixin {
             ),
           ),
 
-          // Bottom spacing
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
-      ),
-      // Mini player placeholder
-      bottomNavigationBar: Container(
-        height: 60,
-        color: const Color(0xFF1A1A1A),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage('https://picsum.photos/200?random=1'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Blinding Lights',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    'The Weeknd',
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.skip_previous, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.pause, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(Icons.skip_next, color: Colors.white),
-              onPressed: () {},
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -519,7 +464,7 @@ class _LiveScreenState extends State<LiveScreen> with TickerProviderStateMixin {
 
           // Event Details
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -554,7 +499,7 @@ class _LiveScreenState extends State<LiveScreen> with TickerProviderStateMixin {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
                         ),
                         child: const Text(
                           'Join Stream',

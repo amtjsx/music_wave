@@ -11,15 +11,30 @@ import 'package:music/screens/artist_detail_screen.dart';
 import 'package:music/screens/auth/login_screen.dart';
 import 'package:music/screens/download/download_queue_screen.dart';
 import 'package:music/screens/explore_screen.dart';
+import 'package:music/screens/friends/following_screen.dart';
+import 'package:music/screens/friends/friend_profile_screen.dart';
+import 'package:music/screens/friends/friends_activity_screen.dart';
+import 'package:music/screens/genre/browse_genre_screen.dart';
+import 'package:music/screens/genre/genre_detail_screen.dart';
 import 'package:music/screens/home_screen.dart';
-import 'package:music/screens/library_screen.dart';
+import 'package:music/screens/library/library_screen.dart';
+import 'package:music/screens/liked-songs/liked-songs-screen.dart';
 import 'package:music/screens/live/live_event_all_screen.dart';
 import 'package:music/screens/live/live_event_detail_screen.dart';
+import 'package:music/screens/live/live_event_search_screen.dart'
+    show LiveEventSearchScreen;
 import 'package:music/screens/live_screen.dart';
+import 'package:music/screens/menu/device_songs_screen.dart';
+import 'package:music/screens/menu/menu_screen.dart';
+import 'package:music/screens/now_playing_screen.dart';
 import 'package:music/screens/playlists/playlist_detail_screen.dart';
+import 'package:music/screens/playlists/playlist_screen.dart';
 import 'package:music/screens/profile_screen.dart';
 import 'package:music/screens/recent_played_screen.dart';
-import 'package:music/screens/song_detail_screen.dart';
+import 'package:music/screens/search_screen.dart';
+import 'package:music/screens/shared_screen.dart';
+import 'package:music/screens/short_screen.dart';
+import 'package:music/screens/trending_screen.dart';
 import 'package:music/screens/welcome_screen.dart';
 import 'package:music/services/deep_link_service.dart';
 
@@ -77,7 +92,7 @@ final GoRouter _router = GoRouter(
             StatefulShellBranch(
               routes: <RouteBase>[
                 GoRoute(
-                  path: 'live',
+                  path: 'live-events',
                   builder: (BuildContext context, GoRouterState state) {
                     return const LiveScreen();
                   },
@@ -88,12 +103,14 @@ final GoRouter _router = GoRouter(
                     return const LiveEventsAllScreen();
                   },
                 ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
                 GoRoute(
-                  path: 'live-event-detail/:eventId',
+                  path: 'shorts',
                   builder: (BuildContext context, GoRouterState state) {
-                    return LiveEventDetailScreen(
-                      eventId: state.pathParameters['eventId']!,
-                    );
+                    return const ShortScreen();
                   },
                 ),
               ],
@@ -101,30 +118,20 @@ final GoRouter _router = GoRouter(
             StatefulShellBranch(
               routes: <RouteBase>[
                 GoRoute(
-                  path: 'library',
+                  path: 'menu',
                   builder: (BuildContext context, GoRouterState state) {
-                    return const LibraryScreen();
+                    return const MenuScreen();
                   },
                 ),
-              ],
-            ),
-            StatefulShellBranch(
-              routes: <RouteBase>[
                 GoRoute(
-                  path: 'profile',
+                  path: 'device-songs',
                   builder: (BuildContext context, GoRouterState state) {
-                    return const ProfileScreen();
+                    return const DeviceSongsScreen();
                   },
                 ),
               ],
             ),
           ],
-        ),
-        GoRoute(
-          path: 'details',
-          builder: (BuildContext context, GoRouterState state) {
-            return const DetailsScreen();
-          },
         ),
         GoRoute(
           path: 'playlists/:playlistId',
@@ -149,7 +156,7 @@ final GoRouter _router = GoRouter(
           },
         ),
         GoRoute(
-          path: 'download-queue',
+          path: 'downloads',
           builder: (BuildContext context, GoRouterState state) {
             return const DownloadQueueScreen();
           },
@@ -161,9 +168,99 @@ final GoRouter _router = GoRouter(
           },
         ),
         GoRoute(
-          path: 'song/:songId',
+          path: 'now-playing',
           builder: (BuildContext context, GoRouterState state) {
-            return SongDetailScreen(songId: state.pathParameters['songId']!);
+            return const NowPlayingScreen();
+          },
+        ),
+        GoRoute(
+          path: 'trending',
+          builder: (BuildContext context, GoRouterState state) {
+            return const TrendingScreen();
+          },
+        ),
+        GoRoute(
+          path: 'playlists',
+          builder: (BuildContext context, GoRouterState state) {
+            return const PlaylistsScreen();
+          },
+        ),
+        GoRoute(
+          path: 'search',
+          builder: (BuildContext context, GoRouterState state) {
+            return const SearchScreen();
+          },
+        ),
+        GoRoute(
+          path: 'live-event-search',
+          builder: (BuildContext context, GoRouterState state) {
+            return const LiveEventSearchScreen();
+          },
+        ),
+        GoRoute(
+          path: 'profile',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ProfileScreen();
+          },
+        ),
+        GoRoute(
+          path: 'browse-genre',
+          builder: (BuildContext context, GoRouterState state) {
+            return const BrowseGenreScreen();
+          },
+        ),
+        GoRoute(
+          path: 'genre/:genreName',
+          builder: (BuildContext context, GoRouterState state) {
+            return GenreDetailScreen(
+              genreName: state.pathParameters['genreName']!,
+            );
+          },
+        ),
+        GoRoute(
+          path: 'library',
+          builder: (BuildContext context, GoRouterState state) {
+            return const LibraryScreen();
+          },
+        ),
+        GoRoute(
+          path: 'friends',
+          builder: (BuildContext context, GoRouterState state) {
+            return const FriendsActivityScreen();
+          },
+        ),
+        GoRoute(
+          path: 'friends/:friendId',
+          builder: (BuildContext context, GoRouterState state) {
+            return FriendProfileScreen(
+              friendId: state.pathParameters['friendId']!,
+            );
+          },
+        ),
+        GoRoute(
+          path: 'following',
+          builder: (BuildContext context, GoRouterState state) {
+            return const FollowingScreen();
+          },
+        ),
+        GoRoute(
+          path: 'shared',
+          builder: (BuildContext context, GoRouterState state) {
+            return const SharedScreen();
+          },
+        ),
+        GoRoute(
+          path: 'liked-songs',
+          builder: (BuildContext context, GoRouterState state) {
+            return const LikedSongsScreen();
+          },
+        ),
+        GoRoute(
+          path: 'live-event-detail/:eventId',
+          builder: (BuildContext context, GoRouterState state) {
+            return LiveEventDetailScreen(
+              liveId: state.pathParameters['eventId']!,
+            );
           },
         ),
       ],
@@ -208,33 +305,6 @@ class _MyAppState extends State<MyApp> {
           secondary: Colors.purpleAccent,
         ),
         fontFamily: 'Roboto',
-      ),
-    );
-  }
-}
-
-/// The details screen
-class DetailsScreen extends StatelessWidget {
-  /// Constructs a [DetailsScreen]
-  const DetailsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Details Screen')),
-      body: Center(
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () => context.go('/'),
-              child: const Text('Go back to the Home screen'),
-            ),
-            ElevatedButton(
-              onPressed: () => context.go('/login'),
-              child: const Text('Go to the Login screen'),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -183,7 +183,7 @@ class _ShareSheetState extends State<ShareSheet> {
               ),
               const SizedBox(height: 4),
               Text(
-                song.artist,
+                song.artist.name,
                 style: TextStyle(color: Colors.grey[400], fontSize: 14),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -356,7 +356,7 @@ class _ShareSheetState extends State<ShareSheet> {
               ),
               const SizedBox(height: 4),
               Text(
-                download.song.artist,
+                download.song.artist.name,
                 style: TextStyle(color: Colors.grey[400], fontSize: 14),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
